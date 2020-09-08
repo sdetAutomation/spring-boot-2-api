@@ -7,3 +7,6 @@ Sample project using Spring Boot 2 and Java
 2) Add dependencies (please check pom.xml) 
 3) Build and Run app to verify app is working
 
+#### 02-hello-world
+1) Create Java class and add hello world code
+2) Create a test for hello world endpoint
