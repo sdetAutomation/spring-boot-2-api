@@ -10,3 +10,8 @@ Sample project using Spring Boot 2 and Java
 #### 02-hello-world
 1) Create Java class and add hello world code
 2) Create a test for hello world endpoint
+3) Create UserDetails Bean
+    - Create UserDetails Model
+    - Add method and mapping in HelloController
+    - Write a test for new endpoint
+    

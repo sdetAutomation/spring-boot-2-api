@@ -26,4 +26,12 @@ public class HelloTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello, welcome to my springboot app!"));
     }
+
+    @Test
+    public void tc0002_helloWorld_bean() throws Exception {
+        mvc.perform(get("/helloworld-bean"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"firstname\":\"sdet\",\"lastname\":\"automation\"," +
+                        "\"city\":\"partsunknown\"}"));
+    }
 }
