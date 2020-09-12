@@ -19,6 +19,18 @@ Sample project using Spring Boot 2 and Java
 1) Update application.properties
 2) Create User Entity, @Entity, @Table, Define getter setters
 3) Implement H2 database
+    - In Memory Database, data will be lost when we restart JVM or when JVM reloads)
+    - Prepopulate DB during runtime
+        - test our entity and h2 database
+        - start the application
+        - navigate to H2 console: localhost:8080/h2-console
+        - all fields should default.  Check "JDBC URL" to see if it matches this: `jdbc:h2:mem:testdb`
+        - click connect, and now can see the table schema and fields on the next screen
+    - Create a data.sql in src/main/resources (add insert statement)
+        - test insert statement
+        - follow steps above to start app and nave to h2 console.
+    - Note: Columns will be in alphabetical order in DB except primary Key Id
+    - Note: Thus, insert statement values should be in alphabetical order as displayed in H2 db.
 4) Create User Repository
 5) Implement getAllUsers RESTful Service, @Service, @RestController
 6) Test getAllUsers
