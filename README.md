@@ -43,6 +43,13 @@ Sample project using Spring Boot 2 and Java
         - create getAllUsers method
         - annotate getAllUsers method with @GetMapping + path
 6) Test getAllUsers
+    - start the app and nav to localhost:8080/users on your web browser
+    - install postman and nav to to localhost:8080/users
+    - write a unit test to test UserController method for getAllUsers
+        - add junit dependency to pom
+        - add test class for UserControllerTest and write test
+        - add new application-test.properties file for test
+        - execute unit test
 7) Implement createUser @PostMapping
 8) Implement getUserById @GetMapping
 9) Implement updateUserById @PutMapping
