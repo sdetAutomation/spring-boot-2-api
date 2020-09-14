@@ -31,7 +31,7 @@ Sample project using Spring Boot 2 and Java
         - follow steps above to start app and nave to h2 console.
     - Note: Columns will be in alphabetical order in DB except primary Key Id
     - Note: Thus, insert statement values should be in alphabetical order as displayed in H2 db.
-4) Create User Repository
+4) Create User Repository:  UserRepository (Interface) (data layer that does all the database connections and operations)
 5) Implement getAllUsers RESTful Service, @Service, @RestController
 6) Test getAllUsers
 7) Implement createUser @PostMapping
