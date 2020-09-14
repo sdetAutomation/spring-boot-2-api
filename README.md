@@ -37,6 +37,11 @@ Sample project using Spring Boot 2 and Java
     - annotate with @Service
     - annotate with @Autowired (autowire UserRepository)
     - create getAllUsers methods
+    - create UserController
+        - annotate @RestController
+        - annotate @Autowired (autowire userService)
+        - create getAllUsers method
+        - annotate getAllUsers method with @GetMapping + path
 6) Test getAllUsers
 7) Implement createUser @PostMapping
 8) Implement getUserById @GetMapping
