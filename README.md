@@ -33,6 +33,10 @@ Sample project using Spring Boot 2 and Java
     - Note: Thus, insert statement values should be in alphabetical order as displayed in H2 db.
 4) Create User Repository:  UserRepository (Interface) (data layer that does all the database connections and operations)
 5) Implement getAllUsers RESTful Service, @Service, @RestController
+    - create UserService (business logic layer)
+    - annotate with @Service
+    - annotate with @Autowired (autowire UserRepository)
+    - create getAllUsers methods
 6) Test getAllUsers
 7) Implement createUser @PostMapping
 8) Implement getUserById @GetMapping
