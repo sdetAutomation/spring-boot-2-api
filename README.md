@@ -51,6 +51,10 @@ Sample project using Spring Boot 2 and Java
         - add new application-test.properties file for test
         - execute unit test
 7) Implement createUser @PostMapping
+    - go to UserService / service layer create method for createUser
+    - go to UserController create method for createUser 
+        - add @PostMapping 
+        - add @RequestBody to param of method.  This is where body will come in.  
 8) Implement getUserById @GetMapping
 9) Implement updateUserById @PutMapping
 10) Implement deleteUserById @DeleteMapping
