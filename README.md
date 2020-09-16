@@ -54,7 +54,10 @@ Sample project using Spring Boot 2 and Java
     - go to UserService / service layer create method for createUser
     - go to UserController create method for createUser 
         - add @PostMapping 
-        - add @RequestBody to param of method.  This is where body will come in.  
+        - add @RequestBody to param of method.  This is where json body will be passed in.
+    - unit test createUser 
+        - create createUser helper function
+        - write createUser unit test
 8) Implement getUserById @GetMapping
 9) Implement updateUserById @PutMapping
 10) Implement deleteUserById @DeleteMapping
