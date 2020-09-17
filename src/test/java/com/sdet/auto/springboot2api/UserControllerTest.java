@@ -60,6 +60,30 @@ public class UserControllerTest {
         assertEquals(td_ssn, user.getSsn());
     }
 
+    @Test
+    public void user_tc0003_getByUserId() {
+        String td_UserId = "101";
+        String td_UserName = "darth.vader";
+        String td_FirstName = "darth";
+        String td_LastName = "vader";
+        String td_Email = "darth.vader@gmail.com";
+        String td_Role = "admin";
+        String td_ssn = "ssn-01-0000";
+
+        ResponseEntity<User> response = restTemplate.getForEntity(path + "/101", User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        User user = response.getBody();
+
+        assertEquals(td_UserId, user.getId().toString());
+        assertEquals(td_UserName, user.getUsername());
+        assertEquals(td_FirstName, user.getFirstname());
+        assertEquals(td_LastName, user.getLastname());
+        assertEquals(td_Email, user.getEmail());
+        assertEquals(td_Role, user.getRole());
+        assertEquals(td_ssn, user.getSsn());
+    }
+
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {
         User user = new User();
         user.setUsername(userName);

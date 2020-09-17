@@ -59,6 +59,14 @@ Sample project using Spring Boot 2 and Java
         - create createUser helper function
         - write createUser unit test
 8) Implement getUserById @GetMapping
+    - go to UserService create method for getUserById
+        - method signature is Optional<User> because the function may or may not find the user.
+    - go to UserController create method for getUserById
+        - method returns Optional<User>
+        - add @PathVariable parameter which gets the id from the url
+        - add @GetMapping("/users/{id}) the id is a param and comes from the url input
+    - unit test getUserById
+        - write getUserById unit test
 9) Implement updateUserById @PutMapping
 10) Implement deleteUserById @DeleteMapping
 11) implement getUserById @GetMapping
