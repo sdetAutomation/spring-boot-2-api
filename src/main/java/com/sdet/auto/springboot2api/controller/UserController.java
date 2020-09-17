@@ -29,4 +29,10 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
+
+    @PutMapping("users/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
+        return userService.updateUserById(id, user);
+    }
 }

@@ -25,4 +25,9 @@ public class UserService {
         Optional<User> user = userRepository.findById(id); // Optional<User>, return will be given id info or empty()
         return user;
     }
+
+    public User updateUserById(Long id, User user) {
+        user.setId(id); // setting the id context.
+        return userRepository.save(user);
+    }
 }

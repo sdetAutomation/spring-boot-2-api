@@ -8,8 +8,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
@@ -82,6 +81,63 @@ public class UserControllerTest {
         assertEquals(td_Email, user.getEmail());
         assertEquals(td_Role, user.getRole());
         assertEquals(td_ssn, user.getSsn());
+    }
+
+
+    @Test
+    public void user_tc0004_updateUserById() {
+        String td_UserId = "101";
+        String td_UserName = "darth.vader_updated";
+        String td_FirstName = "darth_updated";
+        String td_LastName = "vader_updated";
+        String td_Email = "darth.vader_updated@gmail.com";
+        String td_Role = "admin_updated";
+        String td_ssn = "ssn-01-0001";
+        // making a get to get a user record
+        ResponseEntity<User> initResponse = restTemplate.getForEntity(path + "/" + td_UserId, User.class);
+
+        User initUser = initResponse.getBody();
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<User> entity = new HttpEntity<>(initUser, headers);
+        // edit user entity with updated test data values
+        entity.getBody().setUsername(td_UserName);
+        entity.getBody().setFirstname(td_FirstName);
+        entity.getBody().setLastname(td_LastName);
+        entity.getBody().setEmail(td_Email);
+        entity.getBody().setRole(td_Role);
+        entity.getBody().setSsn(td_ssn);
+
+        // make a put call to edit the record using an api put request with updated entity
+
+        ResponseEntity<User> response = restTemplate.exchange(path + "/" + entity.getBody().getId(), HttpMethod.PUT,
+                entity, User.class);
+
+        // assert the response from the api
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        User user = response.getBody();
+        // assert the response body from the put request
+        assertEquals(td_UserId, user.getId().toString());
+        assertEquals(td_UserName, user.getUsername());
+        assertEquals(td_FirstName, user.getFirstname());
+        assertEquals(td_LastName, user.getLastname());
+        assertEquals(td_Email, user.getEmail());
+        assertEquals(td_Role, user.getRole());
+        assertEquals(td_ssn, user.getSsn());
+
+        // making a getByUserId to retrieve the user record
+        ResponseEntity<User> getResponse = restTemplate.getForEntity(path + "/" + td_UserId, User.class);
+
+        // assert the response body from getByUserId request
+        User updatedUser = getResponse.getBody();
+        assertEquals(td_UserId, updatedUser.getId().toString());
+        assertEquals(td_UserName, updatedUser.getUsername());
+        assertEquals(td_FirstName, updatedUser.getFirstname());
+        assertEquals(td_LastName, updatedUser.getLastname());
+        assertEquals(td_Email, updatedUser.getEmail());
+        assertEquals(td_Role, updatedUser.getRole());
+        assertEquals(td_ssn, updatedUser.getSsn());
     }
 
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {

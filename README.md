@@ -68,6 +68,15 @@ Sample project using Spring Boot 2 and Java
     - unit test getUserById
         - write getUserById unit test
 9) Implement updateUserById @PutMapping
+    - go to UserService create method for updateUserById
+    - go to UserController create method for updateByUserId
+        - add @PathVariable for id input, add @RequestBody for json body input
+    - unit test updateByUserId
+        - write updateByUserId unit test
+            - retrieve an existing record
+            - edit existing record and submit a put request using the edited entity
+            - verify the response from the put call
+            - make a get request to retrieve the record and assert all the fields updated
 10) Implement deleteUserById @DeleteMapping
 11) implement getUserById @GetMapping
 
