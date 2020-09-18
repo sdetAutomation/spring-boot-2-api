@@ -162,6 +162,30 @@ public class UserControllerTest {
         assertFalse(userRepository.existsById(response.getBody().getId()));
     }
 
+    @Test
+    public void user_tc0006_getByUsername() {
+        String td_UserId = "103";
+        String td_UserName = "thor.odinson";
+        String td_FirstName = "thor";
+        String td_LastName = "odinson";
+        String td_Email = "thor@gmail.com";
+        String td_Role = "admin";
+        String td_ssn = "ssn-03-0000";
+
+        ResponseEntity<User> response = restTemplate.getForEntity(path + "/byusername/" + td_UserName, User.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        User user = response.getBody();
+
+        assertEquals(td_UserId, user.getId().toString());
+        assertEquals(td_UserName, user.getUsername());
+        assertEquals(td_FirstName, user.getFirstname());
+        assertEquals(td_LastName, user.getLastname());
+        assertEquals(td_Email, user.getEmail());
+        assertEquals(td_Role, user.getRole());
+        assertEquals(td_ssn, user.getSsn());
+    }
+
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {
         User user = new User();
         user.setUsername(userName);

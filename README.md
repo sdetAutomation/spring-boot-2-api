@@ -89,8 +89,12 @@ Sample project using Spring Boot 2 and Java
             - verify response code
             - add auto wire UserRepository to use for verification
             - assert record not in database using UserRepository
-11) implement getUserById @GetMapping
-
-
-
-
+11) implement getUserByUsername @GetMapping
+    - go to UserRepository add method for findByUsername (custom method)
+        - see notes added to this method
+    - go to UserService create method getByUsername
+    - go to UserController create method for getUserByUsername
+        - add @GetMapping("users/byusername/{username}") - note path has addition, since searching by string vs Long
+    - unit test getUserByUsername
+        - write getUserByUsername
+            - write getUserByUsername unit test
