@@ -78,6 +78,17 @@ Sample project using Spring Boot 2 and Java
             - verify the response from the put call
             - make a get request to retrieve the record and assert all the fields updated
 10) Implement deleteUserById @DeleteMapping
+    - go to UserService create method deleteUserById
+        - first perform a findById, if present continue with delete function
+    - go to Controller create method for deleteUserById
+        - add @PathVariable for id input
+    - unit test deleteUserById
+        - write deleteUserById
+            - create new record
+            - make delete request to delete the record that was just created
+            - verify response code
+            - add auto wire UserRepository to use for verification
+            - assert record not in database using UserRepository
 11) implement getUserById @GetMapping
 
 

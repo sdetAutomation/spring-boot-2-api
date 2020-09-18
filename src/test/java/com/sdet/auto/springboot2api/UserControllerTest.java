@@ -1,6 +1,7 @@
 package com.sdet.auto.springboot2api;
 
 import com.sdet.auto.springboot2api.model.User;
+import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +13,7 @@ import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,6 +24,9 @@ public class UserControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    UserRepository userRepository;
 
     private final String path = "/users";
 
@@ -138,6 +141,25 @@ public class UserControllerTest {
         assertEquals(td_Email, updatedUser.getEmail());
         assertEquals(td_Role, updatedUser.getRole());
         assertEquals(td_ssn, updatedUser.getSsn());
+    }
+
+
+    @Test
+    public void user_tc0005_deleteUserById() {
+        String td_UserName = "captain.marvel";
+        String td_FirstName = "captain";
+        String td_LastName = "marvel";
+        String td_Email = "captain.marvel@gmail.com";
+        String td_Role = "admin";
+        String td_ssn = "ssn-05-0000";
+
+        User entity = createUser(td_UserName, td_FirstName, td_LastName, td_Email, td_Role, td_ssn);
+        ResponseEntity<User> response = restTemplate.postForEntity(path, entity, User.class);
+
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getId(), HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
+
+        assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
+        assertFalse(userRepository.existsById(response.getBody().getId()));
     }
 
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {

@@ -35,4 +35,10 @@ public class UserController {
     public User updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
         return userService.updateUserById(id, user);
     }
+
+    @DeleteMapping("users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserByIf(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
+    }
 }

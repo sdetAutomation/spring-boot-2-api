@@ -30,4 +30,10 @@ public class UserService {
         user.setId(id); // setting the id context.
         return userRepository.save(user);
     }
+
+    public void deleteUserById(Long id){
+        if(userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+        }
+    }
 }
