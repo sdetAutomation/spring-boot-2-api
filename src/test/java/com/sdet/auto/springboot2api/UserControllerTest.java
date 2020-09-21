@@ -1,5 +1,7 @@
 package com.sdet.auto.springboot2api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.junit.FixMethodOrder;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.io.IOException;
 import java.util.List;
 import static org.junit.Assert.*;
 
@@ -72,7 +75,7 @@ public class UserControllerTest {
         String td_Role = "admin";
         String td_ssn = "ssn-01-0000";
 
-        ResponseEntity<User> response = restTemplate.getForEntity(path + "/101", User.class);
+        ResponseEntity<User> response = restTemplate.getForEntity(path + "/" +td_UserId, User.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         User user = response.getBody();
@@ -184,6 +187,26 @@ public class UserControllerTest {
         assertEquals(td_Email, user.getEmail());
         assertEquals(td_Role, user.getRole());
         assertEquals(td_ssn, user.getSsn());
+    }
+
+    @Test
+    public void user_tc0007_userNotFoundException() throws IOException {
+        String td_UserId = "1001";
+        String td_Error = "Not Found";
+        String td_Message = "User not found in User Repository";
+        String td_path = "/users/" + td_UserId;
+        // since response will not be a user object, casting the response as a String so we can map to an object
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/" + td_UserId, String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
     }
 
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {

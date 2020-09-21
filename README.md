@@ -98,3 +98,31 @@ Sample project using Spring Boot 2 and Java
     - unit test getUserByUsername
         - write getUserByUsername
             - write getUserByUsername unit test
+            
+#### 04-exception-handling 
+1) implement getUSerById
+    - create UserNotFoundException class in exceptions folder
+        - extend Exception class
+        - create UserNotFoundException constructor
+    - go to UserService
+        - go to getUserById add throws UserNotFoundException
+        - add if statement to check if user found, if not found throw exception and write custom message
+    - go to Controller
+        - add a try catch block and move the getUSerById into the try block
+        - catch the exception UserNotFoundException
+        - throw a new ResponseStatusException - a default /error mapping, returning a JSON response with HTTP status 
+            and the exception message.
+        - add status code and pass the exception message from the service
+    - unit test UserNotFoundException
+        - write UserNotFoundException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
+    - disable stacktrace from response body
+        - go to application.properties set following: server.error.include-stacktrace=never
+
+2) implement updateUserById
+3) implement deleteUserById
+4) implement createUser
+5) add location header for createUserService
+

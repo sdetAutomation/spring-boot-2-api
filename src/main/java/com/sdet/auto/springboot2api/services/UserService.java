@@ -1,5 +1,6 @@
 package com.sdet.auto.springboot2api.services;
 
+import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> getUserById(Long id) {
+
+    public Optional<User> getUserById(Long id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id); // Optional<User>, return will be given id info or empty()
+
+        if (!user.isPresent()) {
+            throw new UserNotFoundException("User not found in User Repository");
+        }
+
         return user;
     }
 
