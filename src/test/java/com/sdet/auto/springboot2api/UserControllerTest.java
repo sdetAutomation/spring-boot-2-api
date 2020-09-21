@@ -89,7 +89,6 @@ public class UserControllerTest {
         assertEquals(td_ssn, user.getSsn());
     }
 
-
     @Test
     public void user_tc0004_updateUserById() {
         String td_UserId = "101";
@@ -146,7 +145,6 @@ public class UserControllerTest {
         assertEquals(td_ssn, updatedUser.getSsn());
     }
 
-
     @Test
     public void user_tc0005_deleteUserById() {
         String td_UserName = "captain.marvel";
@@ -159,7 +157,8 @@ public class UserControllerTest {
         User entity = createUser(td_UserName, td_FirstName, td_LastName, td_Email, td_Role, td_ssn);
         ResponseEntity<User> response = restTemplate.postForEntity(path, entity, User.class);
 
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getId(), HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getId(),
+                HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
 
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
         assertFalse(userRepository.existsById(response.getBody().getId()));
@@ -229,6 +228,28 @@ public class UserControllerTest {
 
         // getting the response body
         String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
+    @Test
+    public void user_tc0009_deleteUserById_Exception() throws IOException {
+        String td_UserId = "1001";
+        String td_Error = "Bad Request";
+        String td_Message = "User not found in User Repository, please provide correct user id";
+        String td_path = "/users/" + td_UserId;
+
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.DELETE,
+                new HttpEntity<String>(null, new HttpHeaders()), String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, deleteResponse.getStatusCode());
+
+        // getting the response body
+        String body = deleteResponse.getBody();
         // get fields from JSON using Jackson Object Mapper
         final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
         // assert expected vs actual

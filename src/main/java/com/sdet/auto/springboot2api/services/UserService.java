@@ -4,7 +4,9 @@ import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,10 +44,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUserById(Long id){
-        if(userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
+    public void deleteUserById(Long id) {
+        // logic to check repository if user is present
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found in User Repository, please " +
+                    "provide correct user id");
         }
+        userRepository.deleteById(id);
     }
 
     public User getUserByUsername(String username) {

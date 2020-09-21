@@ -122,7 +122,7 @@ Sample project using Spring Boot 2 and Java
         - go to application.properties set following: server.error.include-stacktrace=never
 2) implement updateUserById
     - go to UserService
-        - go to updateUserById add logic to check if user is present, and throw exxception if not found
+        - go to updateUserById add logic to check if user is present, and throw exception if not found
     - go to Controller
         - add try catch block and move updateUserById into the try block
         - catch the exception UserNotFoundException
@@ -134,6 +134,14 @@ Sample project using Spring Boot 2 and Java
         - map response body to ObjectMapper
         - assert expected messages vs actual
 3) implement deleteUserById
+    - go to UserService
+        - go to deleteUserById add logic to check if user is present, and throw ResponseStatusException if not found
+    - no changes needed to Controller
+    - unit test DeleteUserById
+        - write DeleteUserById ResponseStatusException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
 4) implement createUser
 5) add location header for createUserService
 
