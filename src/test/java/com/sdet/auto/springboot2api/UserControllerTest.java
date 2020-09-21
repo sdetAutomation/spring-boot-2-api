@@ -1,5 +1,7 @@
 package com.sdet.auto.springboot2api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.junit.FixMethodOrder;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.io.IOException;
 import java.util.List;
 import static org.junit.Assert.*;
 
@@ -46,6 +49,7 @@ public class UserControllerTest {
         String td_Email = "wonder.woman@gmail.com";
         String td_Role = "admin";
         String td_ssn = "ssn-04-0000";
+        String td_header = "/users/";
 
         User entity = createUser(td_UserName, td_FirstName, td_LastName, td_Email, td_Role, td_ssn);
         ResponseEntity<User> response = restTemplate.postForEntity(path, entity, User.class);
@@ -60,6 +64,11 @@ public class UserControllerTest {
         assertEquals(td_Email, user.getEmail());
         assertEquals(td_Role, user.getRole());
         assertEquals(td_ssn, user.getSsn());
+
+        // get header from response
+        HttpHeaders header = response.getHeaders();
+        // assert expected header matches actual
+        assertEquals(td_header + user.getId(), header.getLocation().getPath());
     }
 
     @Test
@@ -72,7 +81,7 @@ public class UserControllerTest {
         String td_Role = "admin";
         String td_ssn = "ssn-01-0000";
 
-        ResponseEntity<User> response = restTemplate.getForEntity(path + "/101", User.class);
+        ResponseEntity<User> response = restTemplate.getForEntity(path + "/" +td_UserId, User.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         User user = response.getBody();
@@ -85,7 +94,6 @@ public class UserControllerTest {
         assertEquals(td_Role, user.getRole());
         assertEquals(td_ssn, user.getSsn());
     }
-
 
     @Test
     public void user_tc0004_updateUserById() {
@@ -143,7 +151,6 @@ public class UserControllerTest {
         assertEquals(td_ssn, updatedUser.getSsn());
     }
 
-
     @Test
     public void user_tc0005_deleteUserById() {
         String td_UserName = "captain.marvel";
@@ -156,7 +163,8 @@ public class UserControllerTest {
         User entity = createUser(td_UserName, td_FirstName, td_LastName, td_Email, td_Role, td_ssn);
         ResponseEntity<User> response = restTemplate.postForEntity(path, entity, User.class);
 
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getId(), HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getId(),
+                HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
 
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
         assertFalse(userRepository.existsById(response.getBody().getId()));
@@ -184,6 +192,98 @@ public class UserControllerTest {
         assertEquals(td_Email, user.getEmail());
         assertEquals(td_Role, user.getRole());
         assertEquals(td_ssn, user.getSsn());
+    }
+
+    @Test
+    public void user_tc0007_getByUserId_Exception() throws IOException {
+        String td_UserId = "1001";
+        String td_Error = "Not Found";
+        String td_Message = "User not found in User Repository";
+        String td_path = "/users/" + td_UserId;
+        // since response will not be a user object, casting the response as a String so we can map to an object
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/" + td_UserId, String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
+    @Test
+    public void user_tc0008_updateUserById_Exception() throws IOException {
+        String td_UserId = "1001";
+        String td_Error = "Bad Request";
+        String td_Message = "User not found in User Repository, please provide correct user id";
+        String td_path = "/users/" + td_UserId;
+        // creating user entity for put
+        User entity = createUser("", "", "", "", "", "");
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<User> putEntity = new HttpEntity<>(entity, headers);
+
+        // make a put call to edit the record using an api put request
+        ResponseEntity<String> response = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.PUT,
+                putEntity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
+    @Test
+    public void user_tc0009_deleteUserById_Exception() throws IOException {
+        String td_UserId = "1001";
+        String td_Error = "Bad Request";
+        String td_Message = "User not found in User Repository, please provide correct user id";
+        String td_path = "/users/" + td_UserId;
+
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.DELETE,
+                new HttpEntity<String>(null, new HttpHeaders()), String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, deleteResponse.getStatusCode());
+
+        // getting the response body
+        String body = deleteResponse.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
+    @Test
+    public void user_tc0010_createUser_Exception() throws IOException {
+        String td_UserName = "thor.odinson";
+        String td_Error = "Bad Request";
+        String td_Message = "User already exists in User Repository";
+        String td_path = "/users";
+
+        User entity = createUser(td_UserName, "", "", "", "", "");
+        ResponseEntity<String> response = restTemplate.postForEntity(path, entity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
     }
 
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {

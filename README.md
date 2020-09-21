@@ -98,3 +98,74 @@ Sample project using Spring Boot 2 and Java
     - unit test getUserByUsername
         - write getUserByUsername
             - write getUserByUsername unit test
+            
+#### 04-exception-handling 
+1) implement getUSerById
+    - create UserNotFoundException class in exceptions folder
+        - extend Exception class
+        - create UserNotFoundException constructor
+    - go to UserService
+        - go to getUserById add throws UserNotFoundException
+        - add if statement to check if user found, if not found throw exception and write custom message
+    - go to Controller
+        - add a try catch block and move getUserById into the try block
+        - catch the exception UserNotFoundException
+        - throw new ResponseStatusException - a default /error mapping, returning a JSON response with HTTP status 
+            and the exception message.
+        - add status code and pass the exception message from the service
+    - unit test UserNotFoundException
+        - write getUSerById UserNotFoundException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
+    - disable stacktrace from response body
+        - go to application.properties set following: server.error.include-stacktrace=never
+2) implement updateUserById
+    - go to UserService
+        - go to updateUserById add logic to check if user is present, and throw exception if not found
+    - go to Controller
+        - add try catch block and move updateUserById into the try block
+        - catch the exception UserNotFoundException
+        - throw new ResponseStatusException 
+        - add status code Bad Request and pass the exception from the service
+    - unit test UpdateUserById
+        - write UpdateUserById UserNotFoundException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
+3) implement deleteUserById
+    - go to UserService
+        - go to deleteUserById add logic to check if user is present, and throw ResponseStatusException if not found
+    - no changes needed to Controller
+    - unit test DeleteUserById
+        - write DeleteUserById ResponseStatusException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
+4) implement createUser
+    - create a UserExistsException class within exceptions class
+        - extend Exception
+        - create string constructor
+    - go to UserService
+        - go to createUser add logic to check if user is present, and throw UserExistsException if found
+        - verify if user exist based on username (username is a unique constraint)
+        - if not null throw exception
+    - go to Controller
+        - add try catch block and move createUser into try block
+        - catch implement ResponseStatusException and pass thru the UserExistException message
+    unit test CreateUser
+        - write CreateUser ResponseStatusException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
+5) add location header for createUserService
+    - go to Controller
+        - add UriComponentBuilder to createUser signature / as param
+        - use HttpHeaders class
+        - set location header using builder
+        - build ResponseEntity<> return: pass in user object, header, set http status created
+        - change method to return ResponseEntity<User>
+        - remove previous annotation of @ResponseStatus
+    - edit user_tc0002_createUser to also assert header location
+        - add field to get HttpHeaders from response
+        - assert expected location vs actual
