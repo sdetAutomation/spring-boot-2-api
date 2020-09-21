@@ -49,6 +49,7 @@ public class UserControllerTest {
         String td_Email = "wonder.woman@gmail.com";
         String td_Role = "admin";
         String td_ssn = "ssn-04-0000";
+        String td_header = "/users/";
 
         User entity = createUser(td_UserName, td_FirstName, td_LastName, td_Email, td_Role, td_ssn);
         ResponseEntity<User> response = restTemplate.postForEntity(path, entity, User.class);
@@ -63,6 +64,11 @@ public class UserControllerTest {
         assertEquals(td_Email, user.getEmail());
         assertEquals(td_Role, user.getRole());
         assertEquals(td_ssn, user.getSsn());
+
+        // get header from response
+        HttpHeaders header = response.getHeaders();
+        // assert expected header matches actual
+        assertEquals(td_header + user.getId(), header.getLocation().getPath());
     }
 
     @Test

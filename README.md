@@ -159,4 +159,13 @@ Sample project using Spring Boot 2 and Java
         - map response body to ObjectMapper
         - assert expected messages vs actual
 5) add location header for createUserService
-
+    - go to Controller
+        - add UriComponentBuilder to createUser signature / as param
+        - use HttpHeaders class
+        - set location header using builder
+        - build ResponseEntity<> return: pass in user object, header, set http status created
+        - change method to return ResponseEntity<User>
+        - remove previous annotation of @ResponseStatus
+    - edit user_tc0002_createUser to also assert header location
+        - add field to get HttpHeaders from response
+        - assert expected location vs actual
