@@ -1,5 +1,6 @@
 package com.sdet.auto.springboot2api.services;
 
+import com.sdet.auto.springboot2api.exceptions.UserExistsException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.repository.UserRepository;
@@ -20,10 +21,15 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(User user) {
+    public User createUser(User user) throws UserExistsException {
+        // logic to check repository if user is present
+        User existingUser = userRepository.findByUsername(user.getUsername());
+        // if user exists, throws an exception
+        if(existingUser != null){
+            throw new UserExistsException("User already exists in User Repository");
+        }
         return userRepository.save(user);
     }
-
 
     public Optional<User> getUserById(Long id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id); // Optional<User>, return will be given id info or empty()

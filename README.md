@@ -143,5 +143,20 @@ Sample project using Spring Boot 2 and Java
         - map response body to ObjectMapper
         - assert expected messages vs actual
 4) implement createUser
+    - create a UserExistsException class within exceptions class
+        - extend Exception
+        - create string constructor
+    - go to UserService
+        - go to createUser add logic to check if user is present, and throw UserExistsException if found
+        - verify if user exist based on username (username is a unique constraint)
+        - if not null throw exception
+    - go to Controller
+        - add try catch block and move createUser into try block
+        - catch implement ResponseStatusException and pass thru the UserExistException message
+    unit test CreateUser
+        - write CreateUser ResponseStatusException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
 5) add location header for createUserService
 

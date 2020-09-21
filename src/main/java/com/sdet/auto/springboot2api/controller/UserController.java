@@ -1,5 +1,6 @@
 package com.sdet.auto.springboot2api.controller;
 
+import com.sdet.auto.springboot2api.exceptions.UserExistsException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.UserService;
@@ -25,7 +26,11 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+        try {
+            return userService.createUser(user);
+        } catch (UserExistsException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
     }
 
     @GetMapping("users/{id}")

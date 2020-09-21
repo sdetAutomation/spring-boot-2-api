@@ -258,6 +258,28 @@ public class UserControllerTest {
         assertEquals(td_path, node.get("path").asText());
     }
 
+    @Test
+    public void user_tc0010_createUser_Exception() throws IOException {
+        String td_UserName = "thor.odinson";
+        String td_Error = "Bad Request";
+        String td_Message = "User already exists in User Repository";
+        String td_path = "/users";
+
+        User entity = createUser(td_UserName, "", "", "", "", "");
+        ResponseEntity<String> response = restTemplate.postForEntity(path, entity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {
         User user = new User();
         user.setUsername(userName);
