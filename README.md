@@ -108,20 +108,31 @@ Sample project using Spring Boot 2 and Java
         - go to getUserById add throws UserNotFoundException
         - add if statement to check if user found, if not found throw exception and write custom message
     - go to Controller
-        - add a try catch block and move the getUSerById into the try block
+        - add a try catch block and move getUserById into the try block
         - catch the exception UserNotFoundException
-        - throw a new ResponseStatusException - a default /error mapping, returning a JSON response with HTTP status 
+        - throw new ResponseStatusException - a default /error mapping, returning a JSON response with HTTP status 
             and the exception message.
         - add status code and pass the exception message from the service
     - unit test UserNotFoundException
-        - write UserNotFoundException unit test
+        - write getUSerById UserNotFoundException unit test
         - since object response will not be a User, cast response entity as String.class
         - map response body to ObjectMapper
         - assert expected messages vs actual
     - disable stacktrace from response body
         - go to application.properties set following: server.error.include-stacktrace=never
-
 2) implement updateUserById
+    - go to UserService
+        - go to updateUserById add logic to check if user is present, and throw exxception if not found
+    - go to Controller
+        - add try catch block and move updateUserById into the try block
+        - catch the exception UserNotFoundException
+        - throw new ResponseStatusException 
+        - add status code Bad Request and pass the exception from the service
+    - unit test UpdateUserById
+        - write UpdateUserById UserNotFoundException unit test
+        - since object response will not be a User, cast response entity as String.class
+        - map response body to ObjectMapper
+        - assert expected messages vs actual
 3) implement deleteUserById
 4) implement createUser
 5) add location header for createUserService

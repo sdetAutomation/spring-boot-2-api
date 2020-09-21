@@ -190,7 +190,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void user_tc0007_userNotFoundException() throws IOException {
+    public void user_tc0007_getByUserId_Exception() throws IOException {
         String td_UserId = "1001";
         String td_Error = "Not Found";
         String td_Message = "User not found in User Repository";
@@ -199,6 +199,34 @@ public class UserControllerTest {
         ResponseEntity<String> response = restTemplate.getForEntity(path + "/" + td_UserId, String.class);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
+    @Test
+    public void user_tc0008_updateUserById_Exception() throws IOException {
+        String td_UserId = "1001";
+        String td_Error = "Bad Request";
+        String td_Message = "User not found in User Repository, please provide correct user id";
+        String td_path = "/users/" + td_UserId;
+        // creating user entity for put
+        User entity = createUser("", "", "", "", "", "");
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<User> putEntity = new HttpEntity<>(entity, headers);
+
+        // make a put call to edit the record using an api put request
+        ResponseEntity<String> response = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.PUT,
+                putEntity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
         // getting the response body
         String body = response.getBody();
         // get fields from JSON using Jackson Object Mapper

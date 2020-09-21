@@ -29,11 +29,15 @@ public class UserService {
         if (!user.isPresent()) {
             throw new UserNotFoundException("User not found in User Repository");
         }
-
         return user;
     }
 
-    public User updateUserById(Long id, User user) {
+    public User updateUserById(Long id, User user) throws UserNotFoundException {
+        // logic to check repository if user is present
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new UserNotFoundException("User not found in User Repository, please provide correct user id");
+        }
         user.setId(id); // setting the id context.
         return userRepository.save(user);
     }
