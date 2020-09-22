@@ -204,6 +204,8 @@ Sample project using Spring Boot 2 and Java
         - go to createUser method and add @Valid to params - this will validate the request body in the controller
         before it gets to the serviceLayer
         - if the validations do not pass, it will return a 400 and json error message 
+    - fix unit test user_tc0010_createUser_Exception
+        - since bean validation of firstName requires at lest 2 characters, must add td_FirstName in test data
             
 2) implement Custom Global Exception Handler using @ControllerAdvice & ResponseEntityExceptionHandler
 3) implement exception handler for HttpRequestMethodNotSupportedException
