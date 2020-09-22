@@ -206,8 +206,20 @@ Sample project using Spring Boot 2 and Java
         - if the validations do not pass, it will return a 400 and json error message 
     - fix unit test user_tc0010_createUser_Exception
         - since bean validation of firstName requires at lest 2 characters, must add td_FirstName in test data
-            
 2) implement Custom Global Exception Handler using @ControllerAdvice & ResponseEntityExceptionHandler
+    - create new CustomErrorDetails class in exceptions package folder
+        - define variables: date, message, errorDetails
+        - add all fields constructor
+        - add getters for fields
+    - create CustomGlobalExceptionHandler
+        - extend ResponseEntityExceptionHandler
+        - add @ControllerAdvice annotation
+            - global code that can be applied to wide range of controllers
+        - hover and go to definition of ResponseEntityExceptionHandler find handleMethodArgumentNotValid method and copy
+        - create method to implement and override handleMethodArgumentNotValid from RepositoryEntityExceptionHandler
+            - add customErrorMessage in code - set date, custom error, and ex.getMessage
+            - return a response entity with custom error details and HttpStatus.BAD_REQUEST
+    
 3) implement exception handler for HttpRequestMethodNotSupportedException
 4) implement exception handler for custom exception UserNameNotFoundException
 5) implement path variable validation & implement exception handler for ConstraintViolationException
