@@ -219,8 +219,15 @@ Sample project using Spring Boot 2 and Java
         - create method to implement and override handleMethodArgumentNotValid from RepositoryEntityExceptionHandler
             - add customErrorMessage in code - set date, custom error, and ex.getMessage
             - return a response entity with custom error details and HttpStatus.BAD_REQUEST
-    
 3) implement exception handler for HttpRequestMethodNotSupportedException
+    - go to CustomGlobalExceptionHandler
+    - hover and go to definition of ResponseEntityExceptionHandler find HttpRequestMethodNotSupportedException copy
+    - paste HttpRequestMethodNotSupportedException function, and refactor with custom message
+        - add @Override and add custom message and error code
+    - create unit test check if patch throws exception
+        - create user_tc0011_updateUserById_patch_CustomException
+        - make a post call and set patch in the url path due to bug with restTemplate and patch function
+
 4) implement exception handler for custom exception UserNameNotFoundException
 5) implement path variable validation & implement exception handler for ConstraintViolationException
 6) implement Global Exception handler using @RestControllerAdvice

@@ -287,6 +287,35 @@ public class UserControllerTest {
         assertEquals(td_path, node.get("path").asText());
     }
 
+    @Test
+    public void user_tc0011_updateUserById_patch_CustomException() throws IOException {
+        String td_UserId = "102";
+        String td_UserName = "thor.odinson";
+        String td_FirstName = "thor";
+        String td_ErrorDetails = "Request method 'PATCH' not supported";
+        String td_Message = "From HttpRequestMethodNotSupported in GEH - Method Not Allowed";
+        // creating user entity for put
+        User entity = createUser(td_UserName, td_FirstName, "", "", "", "");
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<User> putEntity = new HttpEntity<>(entity, headers);
+
+        // make a post call and set patch in the url path due to bug with restTemplate and patch function
+        ResponseEntity<String> response = restTemplate.postForEntity(path + "/" + td_UserId + "?_method=patch",
+                entity, String.class);
+
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_ErrorDetails, node.get("errordetails").asText());
+        assertEquals(td_Message, node.get("message").asText());
+    }
+
+
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {
         User user = new User();
         user.setUsername(userName);
