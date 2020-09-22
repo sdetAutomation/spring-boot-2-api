@@ -169,3 +169,47 @@ Sample project using Spring Boot 2 and Java
     - edit user_tc0002_createUser to also assert header location
         - add field to get HttpHeaders from response
         - assert expected location vs actual
+        
+#### 05-validations-global-exception-handling 
+
+- commonly used validation annotations: @NotNull, @Size, @Min, @Max, @Email, @NotBlank, @NotEmpty
+
+- global exception handling
+    - @ControllerAdvice - allows to write global code that can be applied to wide range of controllers
+        - by default @ControllerAdvice annotation will be applicable to all classes that use @Controller
+        which also applies to @RestController
+    - @ExceptionHandler - annotation for handling exceptions in specific handler classes or handler methods
+        - if used with controller directly need to define per controller basis.  If used with @ControllerAdvice it will 
+        only be used in Global Exception Handler class, but applicable to all controllers due to @ControllerAdvice
+    - @RestControllerAdvice - combination of both @ControllerAdvice and @ResponseBody
+        - we can use @ControllerAdvice annotation for handling exceptions in the RESTful Service but need to add a 
+        @ResponseBody separately
+- use case combination
+    - @ControllerAdvice & ResponseEntityExceptionHandler class
+        - MethodArgumentNotValidException
+        - HttpRequestMethodNotSupporedException
+    - @ControllerAdvice & @ExceptionHandler
+        - for pre-defined exceptions like ConstraintViolations
+        - for custom exceptions like UserNameNotFoundException
+    - @RestControllerAdvice & @ExceptionHandler
+        - for custom exceptions like UserNameNotFoundException
+        - for pre-defined exceptions like "Exception.class" (applicable to all exceptions)
+
+1) implement Bean Validation
+    - Model / Entity Layer
+        - implement validation for User Model
+            - @NotEmpty(message="Username is a required field.  Please provide a username")
+            - @Size(min=2, message="FirstName should contain at least 2 characters")
+    - Controller
+        - go to createUser method and add @Valid to params - this will validate the request body in the controller
+        before it gets to the serviceLayer
+        - if the validations do not pass, it will return a 400 and json error message 
+            
+2) implement Custom Global Exception Handler using @ControllerAdvice & ResponseEntityExceptionHandler
+3) implement exception handler for HttpRequestMethodNotSupportedException
+4) implement exception handler for custom exception UserNameNotFoundException
+5) implement path variable validation & implement exception handler for ConstraintViolationException
+6) implement Global Exception handler using @RestControllerAdvice
+7) switching between @ControllerAdvice and @RestControllerAdvice
+
+

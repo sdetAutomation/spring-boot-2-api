@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user, UriComponentsBuilder builder) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
         try {
             User userObj = userService.createUser(user);
             HttpHeaders headers = new HttpHeaders();
