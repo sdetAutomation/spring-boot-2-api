@@ -187,7 +187,7 @@ Sample project using Spring Boot 2 and Java
 - use case combination
     - @ControllerAdvice & ResponseEntityExceptionHandler class
         - MethodArgumentNotValidException
-        - HttpRequestMethodNotSupporedException
+        - HttpRequestMethodNotSupportedException
     - @ControllerAdvice & @ExceptionHandler
         - for pre-defined exceptions like ConstraintViolations
         - for custom exceptions like UserNameNotFoundException
@@ -227,8 +227,21 @@ Sample project using Spring Boot 2 and Java
     - create unit test check if patch throws exception
         - create user_tc0011_updateUserById_patch_CustomException
         - make a post call and set patch in the url path due to bug with restTemplate and patch function
-
 4) implement exception handler for custom exception UserNameNotFoundException
+    - create new UserNameNotFoundException class in exceptions package folder
+        - extend Exception
+        - add Constructor for string
+    - Controller
+        - edit getUserByUsername function to throw UserNameNotFoundException if user does not exist in repository
+        - check if username exists, if not throw UserNameNotFoundException
+    - CustomGlobalExceptionHandler
+        - create handleUserNameNotFoundException method
+        - annotate with @ExceptionHandler(UserNameNotFoundException.class) - pass in custom Exception.class
+        - this function will pass thru the custom error message and return a ResponseEntity with error code
+    - create unit test for getUserByUsername_Exception
+        - create user_tc0012_getByUsername_CustomException
+        - make get call with a bad username and assert error message
+        
 5) implement path variable validation & implement exception handler for ConstraintViolationException
 6) implement Global Exception handler using @RestControllerAdvice
 7) switching between @ControllerAdvice and @RestControllerAdvice

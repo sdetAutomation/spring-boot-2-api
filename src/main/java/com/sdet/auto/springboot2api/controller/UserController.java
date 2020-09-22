@@ -1,6 +1,7 @@
 package com.sdet.auto.springboot2api.controller;
 
 import com.sdet.auto.springboot2api.exceptions.UserExistsException;
+import com.sdet.auto.springboot2api.exceptions.UserNameNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.UserService;
@@ -65,7 +66,11 @@ public class UserController {
     }
 
     @GetMapping("users/byusername/{username}")
-    public User getUserByUsername(@PathVariable("username") String username) {
-        return userService.getUserByUsername(username);
+    public User getUserByUsername(@PathVariable("username") String username) throws UserNameNotFoundException {
+        User user = userService.getUserByUsername(username);
+        if(user == null) {
+            throw new UserNameNotFoundException("Username: " + username + " not found in User Repository");
+        }
+        return user;
     }
 }

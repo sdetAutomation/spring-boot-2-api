@@ -315,6 +315,24 @@ public class UserControllerTest {
         assertEquals(td_Message, node.get("message").asText());
     }
 
+    @Test
+    public void user_tc0012_getByUsername_CustomException() throws IOException {
+        String td_UserName = "bad.username";
+        String td_ErrorDetails = "uri=/users/byusername/" + td_UserName;
+        String td_Message = "Username: " + td_UserName + " not found in User Repository";
+
+        // since response will not be a user object, casting the response as a String so we can map to an object
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/byusername/" + td_UserName, String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_ErrorDetails, node.get("errordetails").asText());
+        assertEquals(td_Message, node.get("message").asText());
+    }
 
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {
         User user = new User();
