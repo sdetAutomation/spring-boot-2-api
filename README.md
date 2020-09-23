@@ -32,6 +32,7 @@ Sample project using Spring Boot 2 and Java
     - Note: Columns will be in alphabetical order in DB except primary Key Id
     - Note: Thus, insert statement values should be in alphabetical order as displayed in H2 db.
 4) Create User Repository:  UserRepository (Interface) (data layer that does all the database connections and operations)
+
 5) Implement getAllUsers RESTful Service, @Service, @RestController
     - create UserService (business logic layer)
     - annotate with @Service
@@ -42,6 +43,7 @@ Sample project using Spring Boot 2 and Java
         - annotate @Autowired (autowire userService)
         - create getAllUsers method
         - annotate getAllUsers method with @GetMapping + path
+        
 6) Test getAllUsers
     - start the app and nav to localhost:8080/users on your web browser
     - install postman and nav to to localhost:8080/users
@@ -50,6 +52,7 @@ Sample project using Spring Boot 2 and Java
         - add test class for UserControllerTest and write test
         - add new application-test.properties file for test
         - execute unit test
+        
 7) Implement createUser @PostMapping
     - go to UserService / service layer create method for createUser
     - go to UserController create method for createUser 
@@ -58,6 +61,7 @@ Sample project using Spring Boot 2 and Java
     - unit test createUser 
         - create createUser helper function
         - write createUser unit test
+        
 8) Implement getUserById @GetMapping
     - go to UserService create method for getUserById
         - method signature is Optional<User> because the function may or may not find the user.
@@ -67,6 +71,7 @@ Sample project using Spring Boot 2 and Java
         - add @GetMapping("/users/{id}) the id is a param and comes from the url input
     - unit test getUserById
         - write getUserById unit test
+        
 9) Implement updateUserById @PutMapping
     - go to UserService create method for updateUserById
     - go to UserController create method for updateByUserId
@@ -77,6 +82,7 @@ Sample project using Spring Boot 2 and Java
             - edit existing record and submit a put request using the edited entity
             - verify the response from the put call
             - make a get request to retrieve the record and assert all the fields updated
+            
 10) Implement deleteUserById @DeleteMapping
     - go to UserService create method deleteUserById
         - first perform a findById, if present continue with delete function
@@ -89,6 +95,7 @@ Sample project using Spring Boot 2 and Java
             - verify response code
             - add auto wire UserRepository to use for verification
             - assert record not in database using UserRepository
+            
 11) implement getUserByUsername @GetMapping
     - go to UserRepository add method for findByUsername (custom method)
         - see notes added to this method
@@ -120,6 +127,7 @@ Sample project using Spring Boot 2 and Java
         - assert expected messages vs actual
     - disable stacktrace from response body
         - go to application.properties set following: server.error.include-stacktrace=never
+        
 2) implement updateUserById
     - go to UserService
         - go to updateUserById add logic to check if user is present, and throw exception if not found
@@ -133,6 +141,7 @@ Sample project using Spring Boot 2 and Java
         - since object response will not be a User, cast response entity as String.class
         - map response body to ObjectMapper
         - assert expected messages vs actual
+        
 3) implement deleteUserById
     - go to UserService
         - go to deleteUserById add logic to check if user is present, and throw ResponseStatusException if not found
@@ -142,6 +151,7 @@ Sample project using Spring Boot 2 and Java
         - since object response will not be a User, cast response entity as String.class
         - map response body to ObjectMapper
         - assert expected messages vs actual
+        
 4) implement createUser
     - create a UserExistsException class within exceptions class
         - extend Exception
@@ -158,6 +168,7 @@ Sample project using Spring Boot 2 and Java
         - since object response will not be a User, cast response entity as String.class
         - map response body to ObjectMapper
         - assert expected messages vs actual
+        
 5) add location header for createUserService
     - go to Controller
         - add UriComponentBuilder to createUser signature / as param
@@ -206,6 +217,7 @@ Sample project using Spring Boot 2 and Java
         - if the validations do not pass, it will return a 400 and json error message 
     - fix unit test user_tc0010_createUser_Exception
         - since bean validation of firstName requires at lest 2 characters, must add td_FirstName in test data
+        
 2) implement Custom Global Exception Handler using @ControllerAdvice & ResponseEntityExceptionHandler
     - create new CustomErrorDetails class in exceptions package folder
         - define variables: date, message, errorDetails
@@ -219,6 +231,7 @@ Sample project using Spring Boot 2 and Java
         - create method to implement and override handleMethodArgumentNotValid from RepositoryEntityExceptionHandler
             - add customErrorMessage in code - set date, custom error, and ex.getMessage
             - return a response entity with custom error details and HttpStatus.BAD_REQUEST
+            
 3) implement exception handler for HttpRequestMethodNotSupportedException
     - go to CustomGlobalExceptionHandler
     - hover and go to definition of ResponseEntityExceptionHandler find HttpRequestMethodNotSupportedException copy
@@ -227,6 +240,7 @@ Sample project using Spring Boot 2 and Java
     - create unit test check if patch throws exception
         - create user_tc0011_updateUserById_patch_CustomException
         - make a post call and set patch in the url path due to bug with restTemplate and patch function
+        
 4) implement exception handler for custom exception UserNameNotFoundException
     - create new UserNameNotFoundException class in exceptions package folder
         - extend Exception
@@ -251,6 +265,16 @@ Sample project using Spring Boot 2 and Java
         - make get call with user id < 1 and assert error message
     
 6) implement Global Exception handler using @RestControllerAdvice
+    - go to GlobalExceptionHandler 
+        - comment out @ControllerAdvice (only if you want to use @RestControllerAdvice)
+    - create new class GlobalRestControllerAdviceExceptionHandler
+        - annotate with @RestControllerAdvice
+        - create usernameNotFound Method
+            - add annotation @ExceptionHandler(UsernameNotFoundException.class)
+            - add annotation @ResponseStatus(HttpStatus.NOT_FOUND)
+            - return CustomErrorDetails message
+
 7) switching between @ControllerAdvice and @RestControllerAdvice
-
-
+    - to switch between the 2 difference advices
+        - to use @RestControllerAdvice - comment out @ControllerAdvice from GlobalExceptionHandler
+        - to use @ControllerAdvice - comment out @RestControllerAdvice from GlobalRestControllerAdvice
