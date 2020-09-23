@@ -267,11 +267,12 @@ public class UserControllerTest {
     @Test
     public void user_tc0010_createUser_Exception() throws IOException {
         String td_UserName = "thor.odinson";
+        String td_FirstName = "thor";
         String td_Error = "Bad Request";
         String td_Message = "User already exists in User Repository";
         String td_path = "/users";
 
-        User entity = createUser(td_UserName, "", "", "", "", "");
+        User entity = createUser(td_UserName, td_FirstName, "", "", "", "");
         ResponseEntity<String> response = restTemplate.postForEntity(path, entity, String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -284,6 +285,72 @@ public class UserControllerTest {
         assertEquals(td_Error, node.get("error").asText());
         assertEquals(td_Message, node.get("message").asText());
         assertEquals(td_path, node.get("path").asText());
+    }
+
+    @Test
+    public void user_tc0011_updateUserById_patch_CustomException() throws IOException {
+        String td_UserId = "102";
+        String td_UserName = "thor.odinson";
+        String td_FirstName = "thor";
+        String td_ErrorDetails = "Request method 'PATCH' not supported";
+        String td_Message = "From HttpRequestMethodNotSupported in GEH - Method Not Allowed";
+        // creating user entity for put
+        User entity = createUser(td_UserName, td_FirstName, "", "", "", "");
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<User> putEntity = new HttpEntity<>(entity, headers);
+
+        // make a post call and set patch in the url path due to bug with restTemplate and patch function
+        ResponseEntity<String> response = restTemplate.postForEntity(path + "/" + td_UserId + "?_method=patch",
+                entity, String.class);
+
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_ErrorDetails, node.get("errordetails").asText());
+        assertEquals(td_Message, node.get("message").asText());
+    }
+
+    @Test
+    public void user_tc0012_getByUsername_CustomException() throws IOException {
+        String td_UserName = "bad.username";
+        String td_ErrorDetails = "uri=/users/byusername/" + td_UserName;
+        String td_Message = "Username: " + td_UserName + " not found in User Repository";
+
+        // since response will not be a user object, casting the response as a String so we can map to an object
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/byusername/" + td_UserName, String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_ErrorDetails, node.get("errordetails").asText());
+        assertEquals(td_Message, node.get("message").asText());
+    }
+
+    @Test
+    public void user_tc0013_getByUserId_constraint_CustomException() throws IOException {
+        // pass in id < 1, which will throw an exception
+        String td_UserId = "0";
+        String td_ErrorDetails = "uri=/users/0";
+        String td_Message = "getUserById.id: must be greater than or equal to 1";
+        // since response will not be a user object, casting the response as a String so we can map to an object
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/" + td_UserId, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_ErrorDetails, node.get("errordetails").asText());
+        assertEquals(td_Message, node.get("message").asText());
     }
 
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {

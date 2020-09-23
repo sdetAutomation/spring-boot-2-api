@@ -1,6 +1,8 @@
 package com.sdet.auto.springboot2api.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 // Entity refers to the name of the class.  Represents a table that is stored in a database.
 // Defaults to name of class, however, can also declare a different name @Entity(name = "YourName")
@@ -13,9 +15,11 @@ public class User {
     private Long id;
 
     // defaults to field name if you do not define name)
+    @NotEmpty(message="Username is a required field.  Please provide a username")
     @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
     private String username;
 
+    @Size(min=2, message="FirstName should contain at least 2 characters")
     @Column(name = "FIRST_NAME", length = 50, nullable = false)
     private String firstname;
 
