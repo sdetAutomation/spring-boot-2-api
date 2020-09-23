@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -44,5 +46,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 request.getDescription(false));
 
         return new ResponseEntity<>(customErrorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public final ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex,
+                                                                           WebRequest request) {
+
+        CustomErrorDetails customErrorDetails = new CustomErrorDetails(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(customErrorDetails, HttpStatus.BAD_REQUEST);
     }
 }

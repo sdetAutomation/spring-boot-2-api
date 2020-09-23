@@ -243,6 +243,13 @@ Sample project using Spring Boot 2 and Java
         - make get call with a bad username and assert error message
         
 5) implement path variable validation & implement exception handler for ConstraintViolationException
+    - go to Controller
+        - getUserById - add @Min(1) for path variable
+        - add @Validated annotation to UserController
+    - create handleConstraintViolationExceptionHandler and add with custom message and error code Bad Request
+    - create unit test user_tc0013_getByUserId_constraint_CustomException
+        - make get call with user id < 1 and assert error message
+    
 6) implement Global Exception handler using @RestControllerAdvice
 7) switching between @ControllerAdvice and @RestControllerAdvice
 

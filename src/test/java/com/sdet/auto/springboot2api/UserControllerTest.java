@@ -334,6 +334,25 @@ public class UserControllerTest {
         assertEquals(td_Message, node.get("message").asText());
     }
 
+    @Test
+    public void user_tc0013_getByUserId_constraint_CustomException() throws IOException {
+        // pass in id < 1, which will throw an exception
+        String td_UserId = "0";
+        String td_ErrorDetails = "uri=/users/0";
+        String td_Message = "getUserById.id: must be greater than or equal to 1";
+        // since response will not be a user object, casting the response as a String so we can map to an object
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/" + td_UserId, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_ErrorDetails, node.get("errordetails").asText());
+        assertEquals(td_Message, node.get("message").asText());
+    }
+
     private User createUser(String userName, String firstName, String lastName, String email, String role, String ssn) {
         User user = new User();
         user.setUsername(userName);
