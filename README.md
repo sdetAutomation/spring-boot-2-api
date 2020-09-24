@@ -313,5 +313,37 @@ Sample project using Spring Boot 2 and Java
     - start the app and check getAllUsers and you should see order data within the response body
     
 3) implement getAllOrders method
+    - go to Users Controller - add @RequestMapping("/users") at class level
+        - remove "/users" at method level for all User related methods
+        - this will help when creating self links in HATEOAS section
+    - create OrderRepository (Interface) (data layer that does all the database connections and operations with Order)
+        - extend JpaRepository<Order, Long> 
+    - create OrderService class
+        - add @Service at class level
+        - @Autowire userRepository - used for finding a userById
+        - write method: add try catch / error handling, return order is if user found
+    - create OrderController 
+        - add @RestController at a class level
+        - add @RequestMapping("/orders")
+        - add @Autowired for OrderService
+        - write method for getAllOrdersByUserId
+            - add @GetMapping("/{userId}")
+            - add try catch and exception handling
+    - create unit test for getAllOrdersByUserId
+        - create OrderControllerTest class
+        - add the following annotations
+        ```
+            - @RunWith(SpringJUnit4ClassRunner.class)
+            - @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+            - @ActiveProfiles("test")
+            - @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+        ```
+        - add @Autowired for restTemplate
+        - add final String path for "orders/"
+        - write unit test order_tc0001_getAllOrderByUserId
+            - testing happy path 
+        - write unit test order_tc0002_getAllOrderByUserId_Exception
+            - testing exception message if user not found 
+ 
 4) implement createOrder method
 5) implement getOrderByOrderId
