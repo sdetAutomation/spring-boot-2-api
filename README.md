@@ -195,6 +195,7 @@ Sample project using Spring Boot 2 and Java
     - @RestControllerAdvice - combination of both @ControllerAdvice and @ResponseBody
         - we can use @ControllerAdvice annotation for handling exceptions in the RESTful Service but need to add a 
         @ResponseBody separately
+        
 - use case combination
     - @ControllerAdvice & ResponseEntityExceptionHandler class
         - MethodArgumentNotValidException
@@ -278,3 +279,27 @@ Sample project using Spring Boot 2 and Java
     - to switch between the 2 difference advices
         - to use @RestControllerAdvice - comment out @ControllerAdvice from GlobalExceptionHandler
         - to use @ControllerAdvice - comment out @RestControllerAdvice from GlobalRestControllerAdvice
+
+#### 06-jpa-oneToMany-association 
+
+- JPA - one to many database association can be represented either through @ManyToOne or @OneToMany
+- @ManyToOne annotation allows us to map the Foreign Key column in the child entity mapping so that the child
+    has an entity object reference to its parent entity
+
+1) create order entity and @ManyToOne association
+    - create Order model / entity
+        - annotate with @Table(name = "orders")
+    - add order fields
+        - add order_id & order_description
+        - add annotations to order_id
+        - add User variable
+            - add @ManyToOne(fetch = FetchType.LAZY) 
+            - add Fetch type as lazy - unless a call to order.getUser this user will not be fetched when a request comes
+        - add @JsonIgnore - when an order object is created it will not expect user data to be sent
+    - add getters and setters
+    - add NoArgument Constructor
+
+2) update user entity with @OneToMany association
+3) implement getAllOrders method
+4) implement createOrder method
+5) implement getOrderByOrderId
