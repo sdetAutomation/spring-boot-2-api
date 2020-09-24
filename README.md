@@ -299,7 +299,19 @@ Sample project using Spring Boot 2 and Java
     - add getters and setters
     - add NoArgument Constructor
 
-2) update user entity with @OneToMany association
+2) update user model / entity with @OneToMany association
+    - add orders variable field
+    - add @OneToMany Mapping - one user to many orders
+        - add MappedBy to user variable in Order Entity (mappedBy="user")
+        - order is the owner of the relationship. We don't want to create a foreign key in both tables, we can make user
+          as the foreign key, which will create a column for user in the order table.  User side is the referencing side
+    - add getters and setters for "orders"
+    - update data.sql
+        - first start the app, then nav to http://localhost:8080/h2-console/
+        - check orders table for correct columns: ORDER_ID, ORDER_DESCRIPTION, USER_ID
+        - add insert statement to data.sql file
+    - start the app and check getAllUsers and you should see order data within the response body
+    
 3) implement getAllOrders method
 4) implement createOrder method
 5) implement getOrderByOrderId
