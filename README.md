@@ -350,4 +350,10 @@ Sample project using Spring Boot 2 and Java
     - write unit test for getAllOrders endpoint
     
 5) implement createOrder method
+    - go to OrderService and create createOrder method
+    - go to OrderController and create createOrder method
+    - write unit test for createOrder 
+        - test happy path
+        - test exception message if user not found
+
 6) implement getOrderByOrderId
