@@ -91,7 +91,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void order_tc0003_createOrder() {
+    public void order_tc0004_createOrder() {
         String td_UserId = "101";
         String td_OrderDescription = "test_description";
         String td_header = "/orders/";
@@ -112,7 +112,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void order_tc0004_createOrder_Exception() throws IOException {
+    public void order_tc0005_createOrder_Exception() throws IOException {
         String td_UserId = "888";
         String td_OrderDescription = "test_description";
         String td_Error = "Not Found";
