@@ -3,6 +3,7 @@ package com.sdet.auto.springboot2api.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 // Entity refers to the name of the class.  Represents a table that is stored in a database.
 // Defaults to name of class, however, can also declare a different name @Entity(name = "YourName")
@@ -34,6 +35,11 @@ public class User {
 
     @Column(name = "SSN", length = 11, nullable = false, unique = true)
     private String ssn;
+
+    // order is the owner of the relationship. We don't want to create a foreign key in both tables, we can make user
+    // as the foreign key, which will create a column for user in the order table.  User side is the referencing side
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     // No Argument Constructor
     public User() {
@@ -105,6 +111,14 @@ public class User {
 
     public void setSsn(String ssn) {
         this.ssn = ssn;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     // To String (optional, required for bean logging, troubleshooting)

@@ -195,6 +195,7 @@ Sample project using Spring Boot 2 and Java
     - @RestControllerAdvice - combination of both @ControllerAdvice and @ResponseBody
         - we can use @ControllerAdvice annotation for handling exceptions in the RESTful Service but need to add a 
         @ResponseBody separately
+        
 - use case combination
     - @ControllerAdvice & ResponseEntityExceptionHandler class
         - MethodArgumentNotValidException
@@ -278,3 +279,89 @@ Sample project using Spring Boot 2 and Java
     - to switch between the 2 difference advices
         - to use @RestControllerAdvice - comment out @ControllerAdvice from GlobalExceptionHandler
         - to use @ControllerAdvice - comment out @RestControllerAdvice from GlobalRestControllerAdvice
+
+#### 06-jpa-oneToMany-association 
+
+- JPA - one to many database association can be represented either through @ManyToOne or @OneToMany
+- @ManyToOne annotation allows us to map the Foreign Key column in the child entity mapping so that the child
+    has an entity object reference to its parent entity
+
+1) create order entity and @ManyToOne association
+    - create Order model / entity
+        - annotate with @Table(name = "orders")
+    - add order fields
+        - add order_id & order_description
+        - add annotations to order_id
+        - add User variable
+            - add @ManyToOne(fetch = FetchType.LAZY) 
+            - add Fetch type as lazy - unless a call to order.getUser this user will not be fetched when a request comes
+        - add @JsonIgnore - when an order object is created it will not expect user data to be sent
+    - add getters and setters
+    - add NoArgument Constructor
+
+2) update user model / entity with @OneToMany association
+    - add orders variable field
+    - add @OneToMany Mapping - one user to many orders
+        - add MappedBy to user variable in Order Entity (mappedBy="user")
+        - order is the owner of the relationship. We don't want to create a foreign key in both tables, we can make user
+          as the foreign key, which will create a column for user in the order table.  User side is the referencing side
+    - add getters and setters for "orders"
+    - update data.sql
+        - first start the app, then nav to http://localhost:8080/h2-console/
+        - check orders table for correct columns: ORDER_ID, ORDER_DESCRIPTION, USER_ID
+        - add insert statement to data.sql file
+    - start the app and check getAllUsers and you should see order data within the response body
+    
+3) implement getAllOrders method
+    - go to Users Controller - add @RequestMapping("/users") at class level
+        - remove "/users" at method level for all User related methods
+        - this will help when creating self links in HATEOAS section
+    - create OrderRepository (Interface) (data layer that does all the database connections and operations with Order)
+        - extend JpaRepository<Order, Long> 
+    - create OrderService class
+        - add @Service at class level
+        - @Autowire userRepository - used for finding a userById
+        - write method: add try catch / error handling, return order is if user found
+    - create OrderController 
+        - add @RestController at a class level
+        - add @RequestMapping("/orders")
+        - add @Autowired for OrderService
+        - write method for getAllOrdersByUserId
+            - add @GetMapping("/{userId}")
+            - add try catch and exception handling
+    - create unit test for getAllOrdersByUserId
+        - create OrderControllerTest class
+        - add the following annotations
+        ```
+            - @RunWith(SpringJUnit4ClassRunner.class)
+            - @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+            - @ActiveProfiles("test")
+            - @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+        ```
+        - add @Autowired for restTemplate
+        - add final String path for "orders/"
+        - write unit test order_tc0001_getAllOrderByUserId
+            - testing happy path 
+        - write unit test order_tc0002_getAllOrderByUserId_Exception
+            - testing exception message if user not found 
+ 
+4)  - go to OrderService and add method for pulling records from repository
+    - go to Controller add method for getting all orders from the service
+    - write unit test for getAllOrders endpoint
+    
+5) implement createOrder method
+    - go to OrderService and create createOrder method
+    - go to OrderController and create createOrder method
+    - write unit test for createOrder 
+        - test happy path
+        - test exception message if user not found
+
+6) implement getOrderByOrderId
+    - create OrderNotFoundException class 
+    - go to OrderService and create getOrderByOrderId method
+    - go to OrderController create method getOrderByOrderId
+    - write unit test for getOrderOrderId
+        - test happy path
+        - test exception message if user not found
+    
+    
