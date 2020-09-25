@@ -3,6 +3,7 @@ package com.sdet.auto.springboot2api.services;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.Order;
 import com.sdet.auto.springboot2api.model.User;
+import com.sdet.auto.springboot2api.repository.OrderRepository;
 import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,14 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 
     public List<Order> getAllOrdersByUserId(Long id) throws UserNotFoundException {
         // logic to check repository if user is present

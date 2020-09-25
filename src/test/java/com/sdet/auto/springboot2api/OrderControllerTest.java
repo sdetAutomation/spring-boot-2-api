@@ -29,7 +29,7 @@ public class OrderControllerTest {
     private final String path = "/orders";
 
     @Test
-    public void order_tc0001_getAllOrderByUserId() {
+    public void order_tc0001_getAllOrdersByUserId() {
         String td_UserId = "101";
         Long td_OrderId = Long.valueOf(2001);
         String td_OrderDescription = "order11";
@@ -49,7 +49,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void order_tc0002_getAllOrderByUserId_Exception() throws IOException {
+    public void order_tc0002_getAllOrdersByUserId_Exception() throws IOException {
         String td_UserId = "1099";
         String td_Error = "Not Found";
         String td_Message = "User not found in User Repository, please provide correct user id";
@@ -68,4 +68,23 @@ public class OrderControllerTest {
         assertEquals(td_path, node.get("path").asText());
     }
 
+    @Test
+    public void order_tc0003_getAllOrders() {
+
+        Long td_OrderId = Long.valueOf(2001);
+        String td_OrderDescription = "order11";
+        int td_ExpectedNumOfRecords = 6;
+        int firstRecordFromResponse = 0;
+
+        ResponseEntity<Order[]> response = restTemplate.getForEntity(path, Order[].class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        // getting first order from response body
+        Order order = response.getBody()[firstRecordFromResponse];
+
+        assertEquals(td_ExpectedNumOfRecords, response.getBody().length);
+        assertEquals(td_OrderId, order.getOrder_id());
+        assertEquals(td_OrderDescription, order.getOrder_description());
+    }
 }

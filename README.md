@@ -345,5 +345,9 @@ Sample project using Spring Boot 2 and Java
         - write unit test order_tc0002_getAllOrderByUserId_Exception
             - testing exception message if user not found 
  
-4) implement createOrder method
-5) implement getOrderByOrderId
+4)  - go to OrderService and add method for pulling records from repository
+    - go to Controller add method for getting all orders from the service
+    - write unit test for getAllOrders endpoint
+    
+5) implement createOrder method
+6) implement getOrderByOrderId

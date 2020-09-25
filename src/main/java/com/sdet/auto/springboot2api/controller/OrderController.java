@@ -20,6 +20,11 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    @GetMapping
+    public List<Order> getAllUsers() {
+        return orderService.getAllOrders();
+    }
+
     @GetMapping("/{userId}")
     public List<Order> getAllOrdersByUserId(@PathVariable Long userId) {
         try {
