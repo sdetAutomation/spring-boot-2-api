@@ -357,3 +357,11 @@ Sample project using Spring Boot 2 and Java
         - test exception message if user not found
 
 6) implement getOrderByOrderId
+    - create OrderNotFoundException class 
+    - go to OrderService and create getOrderByOrderId method
+    - go to OrderController create method getOrderByOrderId
+    - write unit test for getOrderOrderId
+        - test happy path
+        - test exception message if user not found
+    
+    

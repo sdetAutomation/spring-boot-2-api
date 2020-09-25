@@ -134,6 +134,41 @@ public class OrderControllerTest {
         assertEquals(td_path, node.get("path").asText());
     }
 
+    @Test
+    public void order_tc0006_getByOrderId() {
+        String td_OrderId = "2001";
+        String td_OrderDescription = "order11";
+
+        ResponseEntity<Order> response = restTemplate.getForEntity(path + "/id/" +td_OrderId, Order.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Order order = response.getBody();
+
+        assertEquals(td_OrderId, order.getOrder_id().toString());
+        assertEquals(td_OrderDescription, order.getOrder_description());
+    }
+
+    @Test
+    public void order_tc0007_getByOrderId_Exception() throws IOException {
+        String td_OrderId = "9999";
+        String td_Error = "Not Found";
+        String td_Message = "Order ID not found in Order Repository";
+        String td_path = "/orders/id/" + td_OrderId;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(path + "/id/" +td_OrderId, String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
     private Order createOrder(String orderDescription) {
         Order order = new Order();
         order.setOrder_description(orderDescription);

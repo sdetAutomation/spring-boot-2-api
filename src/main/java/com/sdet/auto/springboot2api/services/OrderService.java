@@ -1,5 +1,6 @@
 package com.sdet.auto.springboot2api.services;
 
+import com.sdet.auto.springboot2api.exceptions.OrderNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.Order;
 import com.sdet.auto.springboot2api.model.User;
@@ -44,5 +45,14 @@ public class OrderService {
         order.setUser(userObj);
 
         return orderRepository.save(order);
+    }
+
+    public Optional<Order> getOrderById(Long id) throws OrderNotFoundException {
+        Optional<Order> order = orderRepository.findById(id); // Optional<Order>, return will be given id info or empty()
+
+        if (!order.isPresent()) {
+            throw new OrderNotFoundException("Order ID not found in Order Repository");
+        }
+        return order;
     }
 }
