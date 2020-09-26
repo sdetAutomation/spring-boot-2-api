@@ -3,6 +3,7 @@ package com.sdet.auto.springboot2api.controller;
 import com.sdet.auto.springboot2api.exceptions.OrderNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.Order;
+import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -57,5 +58,21 @@ public class OrderController {
         } catch (OrderNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
+    }
+
+    @PutMapping("id/{orderId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Order updateOrderById(@PathVariable("orderId") Long id, @RequestBody Order order) {
+        try {
+            return orderService.updateOrderById(id, order);
+        } catch (OrderNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
+    }
+
+    @DeleteMapping("{orderId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable("orderId") Long id) {
+        orderService.deleteOrderById(id);
     }
 }
