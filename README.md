@@ -364,4 +364,14 @@ Sample project using Spring Boot 2 and Java
         - test happy path
         - test exception message if user not found
     
+#### 07-complete-order-api 
+
+1) implement updateOrderById
+    - go to OrderService and create updateOrderById
+    - go to OrderController create updateOrderById
+    - write unit test for updateOrderById
+        - test happy path
+        - test exception message if user not found
     
+2) implement deleteOrderById
+

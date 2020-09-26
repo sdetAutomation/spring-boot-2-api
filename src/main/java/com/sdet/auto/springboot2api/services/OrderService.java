@@ -55,4 +55,16 @@ public class OrderService {
         }
         return order;
     }
+
+    public Order updateOrderById(Long id, Order order) throws OrderNotFoundException {
+        // logic to check repository if order is present
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (!optionalOrder.isPresent()) {
+            throw new OrderNotFoundException("Order not found in Order Repository, please provide correct order_id");
+        }
+
+        order.setOrder_id(id); // setting the id context.
+        order.setOrder_description(order.getOrder_description());  // setting the order description
+        return orderRepository.save(order);
+    }
 }

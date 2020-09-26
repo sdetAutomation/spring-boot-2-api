@@ -11,9 +11,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
@@ -168,6 +166,68 @@ public class OrderControllerTest {
         assertEquals(td_Message, node.get("message").asText());
         assertEquals(td_path, node.get("path").asText());
     }
+
+    @Test
+    public void order_tc0008_updateOrderById() {
+        String td_OrderId = "2001";
+        String td_OrderDescription = "change_description";
+        String td_path = "/orders/id/" + td_OrderId;
+
+        // making a get to get a user record
+        ResponseEntity<Order> initResponse = restTemplate.getForEntity(td_path, Order.class);
+
+        Order initOrder = initResponse.getBody();
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Order> entity = new HttpEntity<>(initOrder, headers);
+        // edit user entity with updated test data values
+        entity.getBody().setOrder_description(td_OrderDescription);
+
+        // make a put call to edit the record using an api put request with updated entity
+        ResponseEntity<Order> response = restTemplate.exchange(td_path, HttpMethod.PUT, entity, Order.class);
+
+        // assert the response from the api
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        Order order = response.getBody();
+        // assert the response body from the put request
+        assertEquals(td_OrderId, order.getOrder_id().toString());
+        assertEquals(td_OrderDescription, order.getOrder_description());
+
+        // making a getByOrderId to retrieve the user record
+        ResponseEntity<Order> getResponse = restTemplate.getForEntity(td_path, Order.class);
+
+        // assert the response body from getByUserId request
+        Order updatedOrder = getResponse.getBody();
+        assertEquals(td_OrderId, updatedOrder.getOrder_id().toString());
+        assertEquals(td_OrderDescription, updatedOrder.getOrder_description());
+    }
+
+    @Test
+    public void order_tc0009_updateOrderById_Exception() throws IOException {
+        String td_OrderId = "9999";
+        String td_path = "/orders/id/" + td_OrderId;
+        String td_Error = "Bad Request";
+        String td_Message = "Order not found in Order Repository, please provide correct order_id";
+
+        Order entity = createOrder("");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Order> putEntity = new HttpEntity<>(entity, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(td_path, HttpMethod.PUT, putEntity, String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        // getting the response body
+        String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
 
     private Order createOrder(String orderDescription) {
         Order order = new Order();
