@@ -374,4 +374,8 @@ Sample project using Spring Boot 2 and Java
         - test exception message if user not found
     
 2) implement deleteOrderById
-
+    - go to OrderService and create deleteOrderById
+    - go to OrderController create deleteOrderById
+    - write unit test for deleteOrderById
+        - test happy path
+        - test exception message if user not found

@@ -7,7 +7,10 @@ import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.repository.OrderRepository;
 import com.sdet.auto.springboot2api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -66,5 +69,15 @@ public class OrderService {
         order.setOrder_id(id); // setting the id context.
         order.setOrder_description(order.getOrder_description());  // setting the order description
         return orderRepository.save(order);
+    }
+
+    public void deleteOrderById(Long id) {
+        // logic to check repository if user is present
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (!optionalOrder.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Order not found in Order Repository, please " +
+                    "provide correct order_id");
+        }
+        orderRepository.deleteById(id);
     }
 }

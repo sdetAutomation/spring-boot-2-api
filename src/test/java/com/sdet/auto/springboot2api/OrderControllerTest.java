@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sdet.auto.springboot2api.model.Order;
 import com.sdet.auto.springboot2api.model.User;
+import com.sdet.auto.springboot2api.repository.OrderRepository;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +16,8 @@ import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,6 +27,9 @@ public class OrderControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     private final String path = "/orders";
 
@@ -220,6 +224,44 @@ public class OrderControllerTest {
 
         // getting the response body
         String body = response.getBody();
+        // get fields from JSON using Jackson Object Mapper
+        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
+        // assert expected vs actual
+        assertEquals(td_Error, node.get("error").asText());
+        assertEquals(td_Message, node.get("message").asText());
+        assertEquals(td_path, node.get("path").asText());
+    }
+
+
+    @Test
+    public void order_tc0010_deleteOrderById() {
+        String td_OrderId = "101";
+        String td_OrderDescription = "test_description";
+        // create a fresh record
+        Order entity = createOrder(td_OrderDescription);
+        ResponseEntity<Order> response = restTemplate.postForEntity(path + "/" + td_OrderId, entity, Order.class);
+        // delete record
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getOrder_id(),
+                HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
+
+        assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
+        assertFalse(orderRepository.existsById(response.getBody().getOrder_id()));
+    }
+
+    @Test
+    public void order_tc0011_deleteOrderById_Exception() throws IOException {
+        String td_UserId = "888";
+        String td_Error = "Bad Request";
+        String td_Message = "Order not found in Order Repository, please provide correct order_id";
+        String td_path = "/orders/" + td_UserId;
+
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.DELETE,
+                new HttpEntity<String>(null, new HttpHeaders()), String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, deleteResponse.getStatusCode());
+
+        // getting the response body
+        String body = deleteResponse.getBody();
         // get fields from JSON using Jackson Object Mapper
         final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
         // assert expected vs actual

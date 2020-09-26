@@ -69,4 +69,10 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }
+
+    @DeleteMapping("{orderId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable("orderId") Long id) {
+        orderService.deleteOrderById(id);
+    }
 }
