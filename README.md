@@ -382,8 +382,16 @@ Sample project using Spring Boot 2 and Java
 
 #### 08-more-testing
 
-1) write users repository integration tests
+1) write user repository integration tests
     - create UserRepositoryIntegrationTest class
     - test CRUD operations
 
+2) write user service integration tests (mockito) 
+    - add a UserServiceImpl class
+    - refactor UserService to be an interface, and migrate all method body's to UserServiceImpl class
+    - create UserServiceImplIntegrationTest class
+        - see notes in test file for annotations and class setup
+
+
+        
     
