@@ -379,3 +379,11 @@ Sample project using Spring Boot 2 and Java
     - write unit test for deleteOrderById
         - test happy path
         - test exception message if user not found
+
+#### 08-more-testing
+
+1) write users repository integration tests
+    - create UserRepositoryIntegrationTest class
+    - test CRUD operations
+
+    
