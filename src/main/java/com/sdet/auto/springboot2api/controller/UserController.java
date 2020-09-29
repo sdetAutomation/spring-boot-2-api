@@ -35,10 +35,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
         try {
-            User userObj = userService.createUser(user);
+            userService.createUser(user);
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(builder.path("/users/{id}").buildAndExpand(user.getId()).toUri());
-            return new ResponseEntity<>(userObj, headers, HttpStatus.CREATED);
+            return new ResponseEntity<>(user, headers, HttpStatus.CREATED);
         } catch (UserExistsException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }

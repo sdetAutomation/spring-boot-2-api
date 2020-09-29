@@ -392,6 +392,10 @@ Sample project using Spring Boot 2 and Java
     - create UserServiceImplIntegrationTest class
         - see notes in test file for annotations and class setup
 
+3) write UserControllerTest (@WebMvcTest)
+    - rename UserControllerTest from before to UserIntegrationTest
+    - create new UserControllerTest class
+    - add annotations, please see test file, write tests
+    
 
-        
     
