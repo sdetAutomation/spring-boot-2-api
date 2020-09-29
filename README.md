@@ -397,5 +397,7 @@ Sample project using Spring Boot 2 and Java
     - create new UserControllerTest class
     - add annotations, please see test file, write tests
     
-
+4) write order repository integration tests
+    - create OrderRepositoryIntegrationTest class
+    - test CRUD operations
     
