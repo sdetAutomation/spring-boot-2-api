@@ -22,6 +22,12 @@ public class Order {
         super();
     }
 
+    public Order(Long order_id, String order_description, User user) {
+        this.order_id = order_id;
+        this.order_description = order_description;
+        this.user = user;
+    }
+
     public Long getOrder_id() {
         return order_id;
     }

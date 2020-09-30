@@ -25,7 +25,7 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping
-    public List<Order> getAllUsers() {
+    public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
@@ -72,7 +72,7 @@ public class OrderController {
 
     @DeleteMapping("{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable("orderId") Long id) {
+    public void deleteOrderById(@PathVariable("orderId") Long id) {
         orderService.deleteOrderById(id);
     }
 }
