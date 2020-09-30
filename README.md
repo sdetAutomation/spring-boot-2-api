@@ -401,3 +401,8 @@ Sample project using Spring Boot 2 and Java
     - create OrderRepositoryIntegrationTest class
     - test CRUD operations
     
+5) write order service integration tests (mockito) 
+       - add a OrderServiceImpl class
+       - refactor OrderService to be an interface, and migrate all method body's to UserServiceImpl class
+       - create OrderServiceImplIntegrationTest class
+           - see notes in test file for annotations and class setup
