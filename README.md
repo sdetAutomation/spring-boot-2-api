@@ -380,7 +380,7 @@ Sample project using Spring Boot 2 and Java
         - test happy path
         - test exception message if user not found
 
-#### 08-more-testing
+#### 08-integration-testing
 
 1) write user repository integration tests
     - create UserRepositoryIntegrationTest class
@@ -402,10 +402,10 @@ Sample project using Spring Boot 2 and Java
     - test CRUD operations
     
 5) write order service integration tests (mockito) 
-       - add a OrderServiceImpl class
-       - refactor OrderService to be an interface, and migrate all method body's to UserServiceImpl class
-       - create OrderServiceImplIntegrationTest class
-           - see notes in test file for annotations and class setup
+   - add a OrderServiceImpl class
+   - refactor OrderService to be an interface, and migrate all method body's to UserServiceImpl class
+   - create OrderServiceImplIntegrationTest class
+       - see notes in test file for annotations and class setup
            
 6) write OrderControllerTest (@WebMvcTest)
     - rename OrderControllerTest from before to UserIntegrationTest
