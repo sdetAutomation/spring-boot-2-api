@@ -436,6 +436,14 @@ Sample project using Spring Boot 2 and Java
         - run all test and slowly update and fix tests that need to reference the new userId and constructor
     
 2) create new User and Order Controllers for hateoas implementation
+    - create UserHateoasController
+        - annotate with @RestController, @RequestMapping, @Validated
+        - Autowire UserRepository
+        - copy methods getUserById, getAllUsers from UserController
+    - create OrderHateoasController
+        - annotate with @RestController, @RequestMapping, @Validated
+        - Autowire UserRepository & OrderRepository
+        - copy method getAllOrders from OrderController
 
 3) implement self link in getUserById method
 
