@@ -1,279 +1,161 @@
 package com.sdet.auto.springboot2api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.sdet.auto.springboot2api.controller.OrderController;
 import com.sdet.auto.springboot2api.model.Order;
 import com.sdet.auto.springboot2api.model.User;
-import com.sdet.auto.springboot2api.repository.OrderRepository;
+import com.sdet.auto.springboot2api.services.OrderService;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import java.io.IOException;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@RunWith(SpringRunner.class)
+@WebMvcTest(OrderController.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class OrderControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mockMvc;
 
-    @Autowired
-    private OrderRepository orderRepository;
-
-    private final String path = "/orders";
+    @MockBean
+    OrderService orderService;
 
     @Test
-    public void order_tc0001_getAllOrdersByUserId() {
-        String td_UserId = "101";
-        Long td_OrderId = Long.valueOf(2001);
-        String td_OrderDescription = "order11";
-        int td_ExpectedNumOfRecords = 3;
-        int firstRecordFromResponse = 0;
+    public void Order_Controller_tc0001_getAllOrders() throws Exception {
+        Long td_id1 = 111L;
+        Long td_id2 = 222L;
+        Long td_id3 = 333L;
 
-        ResponseEntity<Order[]> response = restTemplate.getForEntity(path + "/" + td_UserId, Order[].class);
+        User user = new User(null, "", "", "", "", "", "");
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Order order1 = new Order(td_id1, "order1", user);
+        Order order2 = new Order(td_id2, "order2", user);
+        Order order3 = new Order(td_id3, "order3", user);
 
-        // getting first order from response body
-        Order order = response.getBody()[firstRecordFromResponse];
+        List<Order> ordersList = Arrays.asList(order1, order2, order3);
 
-        assertEquals(td_ExpectedNumOfRecords, response.getBody().length);
-        assertEquals(td_OrderId, order.getOrder_id());
-        assertEquals(td_OrderDescription, order.getOrder_description());
+        given(orderService.getAllOrders()).willReturn(ordersList);
+
+        mockMvc.perform(get("/orders")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].order_id").value(td_id1))
+                .andExpect(jsonPath("$[0].order_description").value("order1"))
+                .andExpect(jsonPath("$[1].order_id").value(td_id2))
+                .andExpect(jsonPath("$[1].order_description").value("order2"))
+                .andExpect(jsonPath("$[2].order_id").value(td_id3))
+                .andExpect(jsonPath("$[2].order_description").value("order3"));
     }
 
     @Test
-    public void order_tc0002_getAllOrdersByUserId_Exception() throws IOException {
-        String td_UserId = "1099";
-        String td_Error = "Not Found";
-        String td_Message = "User not found in User Repository, please provide correct user id";
-        String td_path = path + "/" + td_UserId;
+    public void Order_Controller_tc0002_getAllOrdersByUserId() throws Exception {
+        Long td_id1 = 111L;
+        Long td_id2 = 222L;
+        Long td_id3 = 333L;
 
-        ResponseEntity<String> response = restTemplate.getForEntity(td_path, String.class);
+        User user = new User(null, "", "", "", "", "", "");
 
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        // getting the response body
-        String body = response.getBody();
-        // get fields from JSON using Jackson Object Mapper
-        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
-        // assert expected vs actual
-        assertEquals(td_Error, node.get("error").asText());
-        assertEquals(td_Message, node.get("message").asText());
-        assertEquals(td_path, node.get("path").asText());
+        Order order1 = new Order(td_id1, "order1", user);
+        Order order2 = new Order(td_id2, "order2", user);
+        Order order3 = new Order(td_id3, "order3", user);
+
+        List<Order> ordersList = Arrays.asList(order1, order2, order3);
+
+        given(orderService.getAllOrdersByUserId(td_id1)).willReturn(ordersList);
+
+        mockMvc.perform(get("/orders/111")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].order_id").value(td_id1))
+                .andExpect(jsonPath("$[0].order_description").value("order1"))
+                .andExpect(jsonPath("$[1].order_id").value(td_id2))
+                .andExpect(jsonPath("$[1].order_description").value("order2"))
+                .andExpect(jsonPath("$[2].order_id").value(td_id3))
+                .andExpect(jsonPath("$[2].order_description").value("order3"));
+    }
+
+//    @Test
+//    public void Order_Controller_tc0003_getAllOrdersByUserId_Exception() throws Exception {
+//        Long td_id1 = 111L;
+//
+//        given(orderService.getAllOrdersByUserId(td_id1)).willThrow(new UserNotFoundException(""));
+//
+//        mockMvc.perform(get("/orders/111")
+//                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isNotFound());
+//    }
+
+    @Test
+    public void Order_Controller_tc0003_createOrder() throws Exception {
+        Long td_id = 222L;
+        User user = new User(td_id, "", "", "", "", "", "");
+        Order order = new Order(td_id, "order1", user);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userAsString = objectMapper.writeValueAsString(order);
+
+        mockMvc.perform(post("/orders/222")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(userAsString))
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 
     @Test
-    public void order_tc0003_getAllOrders() {
-        Long td_OrderId = Long.valueOf(2001);
-        String td_OrderDescription = "order11";
-        int td_ExpectedNumOfRecords = 6;
-        int firstRecordFromResponse = 0;
+    public void Order_Controller_tc0004_getOrderById() throws Exception {
+        Long td_id = 111L;
+        User user = new User(null, "", "", "", "", "", "");
+        Order order = new Order(td_id, "order1", user);
 
-        ResponseEntity<Order[]> response = restTemplate.getForEntity(path, Order[].class);
+        given(orderService.getOrderById(td_id)).willReturn(java.util.Optional.of(order));
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        // getting first order from response body
-        Order order = response.getBody()[firstRecordFromResponse];
-
-        assertEquals(td_ExpectedNumOfRecords, response.getBody().length);
-        assertEquals(td_OrderId, order.getOrder_id());
-        assertEquals(td_OrderDescription, order.getOrder_description());
+        mockMvc.perform(get("/orders/id/111")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.order_id").value(td_id))
+                .andExpect(jsonPath("$.order_description").value("order1"));
     }
 
     @Test
-    public void order_tc0004_createOrder() {
-        String td_UserId = "101";
-        String td_OrderDescription = "test_description";
-        String td_header = "/orders/";
+    public void Order_Controller_tc0005_updateOrderById() throws Exception {
+        Long td_id = 222L;
+        User user = new User(td_id, "", "", "", "", "", "");
 
-        Order entity = createOrder(td_OrderDescription);
-        ResponseEntity<Order> response = restTemplate.postForEntity(path + "/" + td_UserId, entity, Order.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userAsString = objectMapper.writeValueAsString(user);
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Order order = response.getBody();
-
-        assertTrue(order.getOrder_id() > 0);
-        assertEquals(td_OrderDescription, order.getOrder_description());
-
-        // get header from response
-        HttpHeaders header = response.getHeaders();
-        // assert expected header matches actual
-        assertEquals(td_header + td_UserId, header.getLocation().getPath());
+        mockMvc.perform(put("/orders/id/222")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(userAsString))
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 
     @Test
-    public void order_tc0005_createOrder_Exception() throws IOException {
-        String td_UserId = "888";
-        String td_OrderDescription = "test_description";
-        String td_Error = "Not Found";
-        String td_Message = "User not found in User Repository";
-        String td_path = "/orders/" + td_UserId;
-
-        Order entity = createOrder(td_OrderDescription);
-        ResponseEntity<String> response = restTemplate.postForEntity(td_path, entity, String.class);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-
-        // getting the response body
-        String body = response.getBody();
-        // get fields from JSON using Jackson Object Mapper
-        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
-        // assert expected vs actual
-        assertEquals(td_Error, node.get("error").asText());
-        assertEquals(td_Message, node.get("message").asText());
-        assertEquals(td_path, node.get("path").asText());
-    }
-
-    @Test
-    public void order_tc0006_getByOrderId() {
-        String td_OrderId = "2001";
-        String td_OrderDescription = "order11";
-
-        ResponseEntity<Order> response = restTemplate.getForEntity(path + "/id/" +td_OrderId, Order.class);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        Order order = response.getBody();
-
-        assertEquals(td_OrderId, order.getOrder_id().toString());
-        assertEquals(td_OrderDescription, order.getOrder_description());
-    }
-
-    @Test
-    public void order_tc0007_getByOrderId_Exception() throws IOException {
-        String td_OrderId = "9999";
-        String td_Error = "Not Found";
-        String td_Message = "Order ID not found in Order Repository";
-        String td_path = "/orders/id/" + td_OrderId;
-
-        ResponseEntity<String> response = restTemplate.getForEntity(path + "/id/" +td_OrderId, String.class);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-
-        // getting the response body
-        String body = response.getBody();
-        // get fields from JSON using Jackson Object Mapper
-        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
-        // assert expected vs actual
-        assertEquals(td_Error, node.get("error").asText());
-        assertEquals(td_Message, node.get("message").asText());
-        assertEquals(td_path, node.get("path").asText());
-    }
-
-    @Test
-    public void order_tc0008_updateOrderById() {
-        String td_OrderId = "2001";
-        String td_OrderDescription = "change_description";
-        String td_path = "/orders/id/" + td_OrderId;
-
-        // making a get to get a user record
-        ResponseEntity<Order> initResponse = restTemplate.getForEntity(td_path, Order.class);
-
-        Order initOrder = initResponse.getBody();
-
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Order> entity = new HttpEntity<>(initOrder, headers);
-        // edit user entity with updated test data values
-        entity.getBody().setOrder_description(td_OrderDescription);
-
-        // make a put call to edit the record using an api put request with updated entity
-        ResponseEntity<Order> response = restTemplate.exchange(td_path, HttpMethod.PUT, entity, Order.class);
-
-        // assert the response from the api
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-
-        Order order = response.getBody();
-        // assert the response body from the put request
-        assertEquals(td_OrderId, order.getOrder_id().toString());
-        assertEquals(td_OrderDescription, order.getOrder_description());
-
-        // making a getByOrderId to retrieve the user record
-        ResponseEntity<Order> getResponse = restTemplate.getForEntity(td_path, Order.class);
-
-        // assert the response body from getByUserId request
-        Order updatedOrder = getResponse.getBody();
-        assertEquals(td_OrderId, updatedOrder.getOrder_id().toString());
-        assertEquals(td_OrderDescription, updatedOrder.getOrder_description());
-    }
-
-    @Test
-    public void order_tc0009_updateOrderById_Exception() throws IOException {
-        String td_OrderId = "9999";
-        String td_path = "/orders/id/" + td_OrderId;
-        String td_Error = "Bad Request";
-        String td_Message = "Order not found in Order Repository, please provide correct order_id";
-
-        Order entity = createOrder("");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Order> putEntity = new HttpEntity<>(entity, headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(td_path, HttpMethod.PUT, putEntity, String.class);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-
-        // getting the response body
-        String body = response.getBody();
-        // get fields from JSON using Jackson Object Mapper
-        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
-        // assert expected vs actual
-        assertEquals(td_Error, node.get("error").asText());
-        assertEquals(td_Message, node.get("message").asText());
-        assertEquals(td_path, node.get("path").asText());
-    }
-
-
-    @Test
-    public void order_tc0010_deleteOrderById() {
-        String td_OrderId = "101";
-        String td_OrderDescription = "test_description";
-        // create a fresh record
-        Order entity = createOrder(td_OrderDescription);
-        ResponseEntity<Order> response = restTemplate.postForEntity(path + "/" + td_OrderId, entity, Order.class);
-        // delete record
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getOrder_id(),
-                HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
-
-        assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
-        assertFalse(orderRepository.existsById(response.getBody().getOrder_id()));
-    }
-
-    @Test
-    public void order_tc0011_deleteOrderById_Exception() throws IOException {
-        String td_UserId = "888";
-        String td_Error = "Bad Request";
-        String td_Message = "Order not found in Order Repository, please provide correct order_id";
-        String td_path = "/orders/" + td_UserId;
-
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.DELETE,
-                new HttpEntity<String>(null, new HttpHeaders()), String.class);
-
-        assertEquals(HttpStatus.BAD_REQUEST, deleteResponse.getStatusCode());
-
-        // getting the response body
-        String body = deleteResponse.getBody();
-        // get fields from JSON using Jackson Object Mapper
-        final ObjectNode node = new ObjectMapper().readValue(body, ObjectNode.class);
-        // assert expected vs actual
-        assertEquals(td_Error, node.get("error").asText());
-        assertEquals(td_Message, node.get("message").asText());
-        assertEquals(td_path, node.get("path").asText());
-    }
-
-
-    private Order createOrder(String orderDescription) {
-        Order order = new Order();
-        order.setOrder_description(orderDescription);
-        return order;
+    public void Order_Controller_tc0006_deleteOrderById() throws Exception {
+        mockMvc.perform(delete("/orders/222")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isNoContent())
+                .andReturn();
     }
 }

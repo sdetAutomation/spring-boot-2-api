@@ -5,9 +5,7 @@ import com.sdet.auto.springboot2api.controller.UserController;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.UserService;
 import org.junit.FixMethodOrder;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +36,6 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void User_Controller_tc0001_getAllUsers() throws Exception {

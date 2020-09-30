@@ -406,3 +406,8 @@ Sample project using Spring Boot 2 and Java
        - refactor OrderService to be an interface, and migrate all method body's to UserServiceImpl class
        - create OrderServiceImplIntegrationTest class
            - see notes in test file for annotations and class setup
+           
+6) write OrderControllerTest (@WebMvcTest)
+    - rename OrderControllerTest from before to UserIntegrationTest
+    - create new OrderControllerTest class
+    - add annotations, please see test file, write tests
