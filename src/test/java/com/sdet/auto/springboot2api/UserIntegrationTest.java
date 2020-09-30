@@ -57,7 +57,7 @@ public class UserIntegrationTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         User user = response.getBody();
 
-        assertTrue(user.getId() > 0);
+        assertTrue(user.getUserId() > 0);
         assertEquals(td_UserName, user.getUsername());
         assertEquals(td_FirstName, user.getFirstname());
         assertEquals(td_LastName, user.getLastname());
@@ -68,7 +68,7 @@ public class UserIntegrationTest {
         // get header from response
         HttpHeaders header = response.getHeaders();
         // assert expected header matches actual
-        assertEquals(td_header + user.getId(), header.getLocation().getPath());
+        assertEquals(td_header + user.getUserId(), header.getLocation().getPath());
     }
 
     @Test
@@ -86,7 +86,7 @@ public class UserIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         User user = response.getBody();
 
-        assertEquals(td_UserId, user.getId().toString());
+        assertEquals(td_UserId, user.getUserId().toString());
         assertEquals(td_UserName, user.getUsername());
         assertEquals(td_FirstName, user.getFirstname());
         assertEquals(td_LastName, user.getLastname());
@@ -121,7 +121,7 @@ public class UserIntegrationTest {
 
         // make a put call to edit the record using an api put request with updated entity
 
-        ResponseEntity<User> response = restTemplate.exchange(path + "/" + entity.getBody().getId(), HttpMethod.PUT,
+        ResponseEntity<User> response = restTemplate.exchange(path + "/" + entity.getBody().getUserId(), HttpMethod.PUT,
                 entity, User.class);
 
         // assert the response from the api
@@ -129,7 +129,7 @@ public class UserIntegrationTest {
 
         User user = response.getBody();
         // assert the response body from the put request
-        assertEquals(td_UserId, user.getId().toString());
+        assertEquals(td_UserId, user.getUserId().toString());
         assertEquals(td_UserName, user.getUsername());
         assertEquals(td_FirstName, user.getFirstname());
         assertEquals(td_LastName, user.getLastname());
@@ -142,7 +142,7 @@ public class UserIntegrationTest {
 
         // assert the response body from getByUserId request
         User updatedUser = getResponse.getBody();
-        assertEquals(td_UserId, updatedUser.getId().toString());
+        assertEquals(td_UserId, updatedUser.getUserId().toString());
         assertEquals(td_UserName, updatedUser.getUsername());
         assertEquals(td_FirstName, updatedUser.getFirstname());
         assertEquals(td_LastName, updatedUser.getLastname());
@@ -163,11 +163,11 @@ public class UserIntegrationTest {
         User entity = createUser(td_UserName, td_FirstName, td_LastName, td_Email, td_Role, td_ssn);
         ResponseEntity<User> response = restTemplate.postForEntity(path, entity, User.class);
 
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getId(),
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getUserId(),
                 HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
 
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
-        assertFalse(userRepository.existsById(response.getBody().getId()));
+        assertFalse(userRepository.existsById(response.getBody().getUserId()));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class UserIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         User user = response.getBody();
 
-        assertEquals(td_UserId, user.getId().toString());
+        assertEquals(td_UserId, user.getUserId().toString());
         assertEquals(td_UserName, user.getUsername());
         assertEquals(td_FirstName, user.getFirstname());
         assertEquals(td_LastName, user.getLastname());

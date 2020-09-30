@@ -71,9 +71,9 @@ public class UserServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user1 = new User(td_id1,td_userName1, td_firstName1, td_lastName1, td_email1, td_role1, td_ssn1);
-        User user2 = new User(td_id2,td_userName2, td_firstName2, td_lastName2, td_email2, td_role2, td_ssn2);
-        User user3 = new User(td_id3,td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3);
+        User user1 = new User(td_id1,td_userName1, td_firstName1, td_lastName1, td_email1, td_role1, td_ssn1, null);
+        User user2 = new User(td_id2,td_userName2, td_firstName2, td_lastName2, td_email2, td_role2, td_ssn2, null);
+        User user3 = new User(td_id3,td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
 
         List<User> td_users = Arrays.asList(user1, user2);
 
@@ -99,7 +99,7 @@ public class UserServiceImplIntegrationTest {
         List<User> users = userService.getAllUsers();
 
         assertEquals(users.size(), td_array_size);
-        assertEquals(users.get(user1).getId(), td_id1);
+        assertEquals(users.get(user1).getUserId(), td_id1);
         assertEquals(users.get(user1).getUsername(), td_userName1);
         assertEquals(users.get(user1).getFirstname(), td_firstName1);
         assertEquals(users.get(user1).getLastname(), td_lastName1);
@@ -120,7 +120,7 @@ public class UserServiceImplIntegrationTest {
 
         Optional<User> users = userService.getUserById(td_id1);
 
-        assertEquals(users.get().getId(), td_id1);
+        assertEquals(users.get().getUserId(), td_id1);
         assertEquals(users.get().getUsername(), td_userName1);
         assertEquals(users.get().getFirstname(), td_firstName1);
         assertEquals(users.get().getLastname(), td_lastName1);
@@ -153,7 +153,7 @@ public class UserServiceImplIntegrationTest {
 
         User users = userService.getUserByUsername(td_userName1);
 
-        assertEquals(users.getId(), td_id1);
+        assertEquals(users.getUserId(), td_id1);
         assertEquals(users.getUsername(), td_userName1);
         assertEquals(users.getFirstname(), td_firstName1);
         assertEquals(users.getLastname(), td_lastName1);
@@ -172,11 +172,11 @@ public class UserServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3);
+        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
 
         User returnUser = userService.createUser(user);
 
-        assertEquals(returnUser.getId(), td_id3);
+        assertEquals(returnUser.getUserId(), td_id3);
         assertEquals(returnUser.getUsername(), td_userName3);
         assertEquals(returnUser.getFirstname(), td_firstName3);
         assertEquals(returnUser.getLastname(), td_lastName3);
@@ -190,7 +190,7 @@ public class UserServiceImplIntegrationTest {
         String td_userName3 = "td_userName1";
         String td_error_message = "User already exists in User Repository";
 
-        User user = new User(null, td_userName3, "", "", "", "", "");
+        User user = new User(null, td_userName3, "", "", "", "", "", null);
 
         try {
             userService.createUser(user);
@@ -210,11 +210,11 @@ public class UserServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3);
+        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
 
         User returnUser = userService.updateUserById(td_id1, user);
 
-        assertEquals(returnUser.getId(), td_id3);
+        assertEquals(returnUser.getUserId(), td_id3);
         assertEquals(returnUser.getUsername(), td_userName3);
         assertEquals(returnUser.getFirstname(), td_firstName3);
         assertEquals(returnUser.getLastname(), td_lastName3);
@@ -228,7 +228,7 @@ public class UserServiceImplIntegrationTest {
         Long td_id1 = 999L;
         String td_error_message = "User not found in User Repository, please provide correct user id";
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
 
         try {
             userService.updateUserById(td_id1, user);

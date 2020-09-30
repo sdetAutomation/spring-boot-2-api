@@ -47,7 +47,7 @@ public class UserControllerTest {
         String td_role = "td_role1";
         String td_ssn = "td_ssn1";
 
-        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn);
+        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
 
         List<User> allUsers = Arrays.asList(user);
 
@@ -57,7 +57,7 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id").value(td_id))
+                .andExpect(jsonPath("$[0].userId").value(td_id))
                 .andExpect(jsonPath("$[0].username").value(td_userName))
                 .andExpect(jsonPath("$[0].firstname").value(td_firstName))
                 .andExpect(jsonPath("$[0].lastname").value(td_lastName))
@@ -77,7 +77,7 @@ public class UserControllerTest {
         String td_role = "td_role2";
         String td_ssn = "td_ssn2";
 
-        User user = new User(td_id, td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn);
+        User user = new User(td_id, td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -88,7 +88,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(userAsString))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(td_id))
+                .andExpect(jsonPath("$.userId").value(td_id))
                 .andExpect(jsonPath("$.username").value(td_userName))
                 .andExpect(jsonPath("$.firstname").value(td_firstName))
                 .andExpect(jsonPath("$.lastname").value(td_lastName))
@@ -107,14 +107,14 @@ public class UserControllerTest {
         String td_role = "td_role1";
         String td_ssn = "td_ssn1";
 
-        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn);
+        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
 
         given(userService.getUserById(td_id)).willReturn(java.util.Optional.of(user));
 
         mockMvc.perform(get("/users/111")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(td_id))
+                .andExpect(jsonPath("$.userId").value(td_id))
                 .andExpect(jsonPath("$.username").value(td_userName))
                 .andExpect(jsonPath("$.firstname").value(td_firstName))
                 .andExpect(jsonPath("$.lastname").value(td_lastName))
@@ -127,7 +127,7 @@ public class UserControllerTest {
     @Test
     public void User_Controller_tc0004_updateUserById() throws Exception {
         Long td_id = 222L;
-        User user = new User(td_id, "", "", "", "", "", "");
+        User user = new User(td_id, "", "", "", "", "", "", null);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userAsString = objectMapper.writeValueAsString(user);
@@ -159,7 +159,7 @@ public class UserControllerTest {
         String td_role = "td_role1";
         String td_ssn = "td_ssn1";
 
-        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn);
+        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
 
         given(userService.getUserByUsername(td_userName)).willReturn(user);
 
@@ -167,7 +167,7 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(td_id))
+                .andExpect(jsonPath("$.userId").value(td_id))
                 .andExpect(jsonPath("$.username").value(td_userName))
                 .andExpect(jsonPath("$.firstname").value(td_firstName))
                 .andExpect(jsonPath("$.lastname").value(td_lastName))

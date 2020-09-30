@@ -411,3 +411,32 @@ Sample project using Spring Boot 2 and Java
     - rename OrderControllerTest from before to UserIntegrationTest
     - create new OrderControllerTest class
     - add annotations, please see test file, write tests
+    
+#### 09-hateoas
+
+- hateoas is used to present information about a REST api to a client without the need to bring up the api documentation
+- includes links in a return response which can be used by the client to further communicate with the server
+- Spring hateoas provides 3 abstractions for creating uri
+    - resource Support
+    - link
+    - ControllerLinkBuilder
+
+0) add hateoas to dependency pom.xml
+    - see hateoas in pom.xml file
+
+1) extend both models to ResourceSupport
+    - go to Order model / entity to extend ResourceSupport 
+    - go to User model / entity to extend ResourceSupport 
+        - User model will have a syntax error
+        - since "id" is a field within hateos, must change our id field to userId
+        - regenerate getters and setters, constructor, and toString 
+    - refactor unit test & integration test
+        - test will break
+        - update order insert statement for data.sql file
+        - run all test and slowly update and fix tests that need to reference the new userId and constructor
+    
+2) create new User and Order Controllers for hateoas implementation
+
+3) implement self link in getUserById method
+
+4) implement self and relationship link in getAllUsers method

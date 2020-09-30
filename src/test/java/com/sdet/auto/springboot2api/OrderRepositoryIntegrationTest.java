@@ -26,10 +26,12 @@ public class OrderRepositoryIntegrationTest {
     @Before
     public void setUp() {
 
-        User user1 = new User(null,"username1", "firstname1", "lastname1",
-                "email1", "role1", "ssn1");
+        User user = new User(null, "username1", "firstname1", "lastname1",
+                "email1", "role1", "ssn1", null);
+        User user1 = user;
         User user2 = new User(null,"username2", "firstname2", "lastname2",
-                "email2", "role2", "ssn2");
+                "email2", "role2", "ssn2", null);
+
 
         Order order1 = new Order(null, "order1", user1);
         Order order2 = new Order(null, "order2", user2);
@@ -37,7 +39,6 @@ public class OrderRepositoryIntegrationTest {
         this.orderRepository.save(order1);
         this.orderRepository.save(order2);
     }
-
 
     @Test
     public void Order_Repository_TC0001_testFetchData() {
@@ -56,7 +57,7 @@ public class OrderRepositoryIntegrationTest {
         Long td_original_record = 3L;
         String td_orderDescription = "td_orderDescription";
         User user1 = new User(null,"username1", "firstname1", "lastname1",
-                "email1", "role1", "ssn1");
+                "email1", "role1", "ssn1", null);
         // get record
         Optional<Order> saved_order_1 = orderRepository.findById(td_original_record);
         // creating order obj to send with update

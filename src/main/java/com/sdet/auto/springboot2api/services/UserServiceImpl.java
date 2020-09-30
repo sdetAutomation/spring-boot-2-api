@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         if (!optionalUser.isPresent()) {
             throw new UserNotFoundException("User not found in User Repository, please provide correct user id");
         }
-        user.setId(id); // setting the id context.
+        user.setUserId(id); // setting the id context.
         return userRepository.save(user);
     }
 

@@ -76,9 +76,9 @@ public class OrderServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user1 = new User(td_id1,td_userName1, td_firstName1, td_lastName1, td_email1, td_role1, td_ssn1);
-        User user2 = new User(td_id2,td_userName2, td_firstName2, td_lastName2, td_email2, td_role2, td_ssn2);
-        User user3 = new User(td_id3,td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3);
+        User user1 = new User(td_id1,td_userName1, td_firstName1, td_lastName1, td_email1, td_role1, td_ssn1, null);
+        User user2 = new User(td_id2,td_userName2, td_firstName2, td_lastName2, td_email2, td_role2, td_ssn2, null);
+        User user3 = new User(td_id3,td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
 
         Order order1 = new Order(td_id1, "order1", user1);
         Order order2 = new Order(td_id2, "order2", user2);
@@ -133,7 +133,7 @@ public class OrderServiceImplIntegrationTest {
     public void Order_Service_tc0004_createOrder() throws UserNotFoundException {
         Long td_id3 = 111L;
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
 
         Order order1 = new Order(td_id3, "order1", user);
 
@@ -148,7 +148,7 @@ public class OrderServiceImplIntegrationTest {
         Long td_id2 = 222L;
         String td_error_message = "User not found in User Repository";
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
 
         Order order1 = new Order(td_id2, "order1", user);
 
@@ -189,7 +189,7 @@ public class OrderServiceImplIntegrationTest {
     public void Order_Service_tc0008_updateOrderById() throws OrderNotFoundException {
         Long td_id1 = 111L;
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
 
         Order order1 = new Order(td_id1, "order1", user);
 
@@ -204,7 +204,7 @@ public class OrderServiceImplIntegrationTest {
         Long td_id1 = 222L;
         String td_error_message = "Order not found in Order Repository, please provide correct order_id";
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
         Order order1 = new Order(td_id1, "order1", user);
 
         try {
