@@ -446,5 +446,20 @@ Sample project using Spring Boot 2 and Java
         - copy method getAllOrders from OrderController
 
 3) implement self link in getUserById method
+    - update dependency in pom.xml (previous dependency was incorrect)
+    
+    ```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+    ```
 
+    - refactor getUserById
+        - update return to Resource<User>
+        - write code for selflink and add to user return object
+    - write unit test for getUserById hateoas
+        - create UserIntegrationHateoasTest 
+        - write test to verify selflink is returned
+        
 4) implement self and relationship link in getAllUsers method

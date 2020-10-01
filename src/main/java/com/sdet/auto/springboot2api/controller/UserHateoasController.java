@@ -4,6 +4,9 @@ import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +32,20 @@ public class UserHateoasController {
         return userService.getAllUsers();
     }
 
-
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") @Min(1) Long id) {
+    public Resource<User> getUserById(@PathVariable("id") @Min(1) Long id) {
+
         try {
-            return userService.getUserById(id);
+            Optional<User> userOptional = userService.getUserById(id);
+
+            User user = userOptional.get();
+            Long userid = user.getUserId();
+
+            Link selflink = ControllerLinkBuilder.linkTo(this.getClass()).slash(userid).withSelfRel();
+            user.add(selflink);
+
+            Resource<User> finalResource = new Resource<User>(user);
+            return finalResource;
         } catch (UserNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
