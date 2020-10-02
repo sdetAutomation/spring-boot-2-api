@@ -41,7 +41,7 @@ public class OrderControllerTest {
         Long td_id2 = 222L;
         Long td_id3 = 333L;
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
 
         Order order1 = new Order(td_id1, "order1", user);
         Order order2 = new Order(td_id2, "order2", user);
@@ -69,7 +69,7 @@ public class OrderControllerTest {
         Long td_id2 = 222L;
         Long td_id3 = 333L;
 
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
 
         Order order1 = new Order(td_id1, "order1", user);
         Order order2 = new Order(td_id2, "order2", user);
@@ -105,7 +105,7 @@ public class OrderControllerTest {
     @Test
     public void Order_Controller_tc0003_createOrder() throws Exception {
         Long td_id = 222L;
-        User user = new User(td_id, "", "", "", "", "", "");
+        User user = new User(td_id, "", "", "", "", "", "", null);
         Order order = new Order(td_id, "order1", user);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -122,7 +122,7 @@ public class OrderControllerTest {
     @Test
     public void Order_Controller_tc0004_getOrderById() throws Exception {
         Long td_id = 111L;
-        User user = new User(null, "", "", "", "", "", "");
+        User user = new User(null, "", "", "", "", "", "", null);
         Order order = new Order(td_id, "order1", user);
 
         given(orderService.getOrderById(td_id)).willReturn(java.util.Optional.of(order));
@@ -137,7 +137,7 @@ public class OrderControllerTest {
     @Test
     public void Order_Controller_tc0005_updateOrderById() throws Exception {
         Long td_id = 222L;
-        User user = new User(td_id, "", "", "", "", "", "");
+        User user = new User(td_id, "", "", "", "", "", "", null);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userAsString = objectMapper.writeValueAsString(user);

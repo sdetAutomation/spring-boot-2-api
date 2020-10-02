@@ -24,9 +24,9 @@ public class UserRepositoryIntegrationTest {
     @Before
     public void setUp() {
         User user1 = new User(null,"username1", "firstname1", "lastname1",
-                "email1", "role1", "ssn1");
+                "email1", "role1", "ssn1", null);
         User user2 = new User(null,"username2", "firstname2", "lastname2",
-                "email2", "role2", "ssn2");
+                "email2", "role2", "ssn2", null);
         // perform save
         this.userRepository.save(user1);
         this.userRepository.save(user2);
@@ -66,7 +66,7 @@ public class UserRepositoryIntegrationTest {
         // get record
         User saved_user1 = userRepository.findByUsername(td_original_record);
         // set id for later get and assert of record
-        Long td_id = saved_user1.getId();
+        Long td_id = saved_user1.getUserId();
 
         // edit saved user
         saved_user1.setUsername(td_userName);
@@ -80,7 +80,7 @@ public class UserRepositoryIntegrationTest {
         // get updated user
         Optional<User> updated_user = userRepository.findById(td_id);
 
-        assertEquals(td_id, updated_user.get().getId());
+        assertEquals(td_id, updated_user.get().getUserId());
         assertEquals(td_userName, updated_user.get().getUsername());
         assertEquals(td_firstName, updated_user.get().getFirstname());
         assertEquals(td_lastName, updated_user.get().getLastname());

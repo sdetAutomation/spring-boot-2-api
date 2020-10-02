@@ -1,11 +1,12 @@
 package com.sdet.auto.springboot2api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.ResourceSupport;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends ResourceSupport {
 
     @Id
     @GeneratedValue

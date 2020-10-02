@@ -3,7 +3,6 @@ package com.sdet.auto.springboot2api.controller;
 import com.sdet.auto.springboot2api.exceptions.OrderNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.Order;
-import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

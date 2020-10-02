@@ -411,3 +411,73 @@ Sample project using Spring Boot 2 and Java
     - rename OrderControllerTest from before to UserIntegrationTest
     - create new OrderControllerTest class
     - add annotations, please see test file, write tests
+    
+#### 09-hateoas
+
+- hateoas is used to present information about a REST api to a client without the need to bring up the api documentation
+- includes links in a return response which can be used by the client to further communicate with the server
+- Spring hateoas provides 3 abstractions for creating uri
+    - resource Support
+    - link
+    - ControllerLinkBuilder
+
+0) add hateoas to dependency pom.xml
+    - see hateoas in pom.xml file
+
+1) extend both models to ResourceSupport
+    - go to Order model / entity to extend ResourceSupport 
+    - go to User model / entity to extend ResourceSupport 
+        - User model will have a syntax error
+        - since "id" is a field within hateos, must change our id field to userId
+        - regenerate getters and setters, constructor, and toString 
+    - refactor unit test & integration test
+        - test will break
+        - update order insert statement for data.sql file
+        - run all test and slowly update and fix tests that need to reference the new userId and constructor
+    
+2) create new User and Order Controllers for hateoas implementation
+    - create UserHateoasController
+        - annotate with @RestController, @RequestMapping, @Validated
+        - Autowire UserRepository
+        - copy methods getUserById, getAllUsers from UserController
+    - create OrderHateoasController
+        - annotate with @RestController, @RequestMapping, @Validated
+        - Autowire UserRepository & OrderRepository
+        - copy method getAllOrders from OrderController
+
+3) implement self link in getUserById method
+    - update dependency in pom.xml (previous dependency was incorrect)
+    
+    ```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+    ```
+
+    - refactor getUserById
+        - update return to Resource<User>
+        - write code for selflink and add to user return object
+    - write unit test for getUserById hateoas
+        - create UserIntegrationHateoasTest 
+        - write test to verify selflink is returned
+        
+4) implement self link in getAllUsers, and relationship link with getAllOrdersByUserId
+    - refactor getAllUsers hateoas
+        - implement selflink for each user on list / add loop and selflink logic
+        - create relationship link with getAllOrderByUserId
+            - add and refactor getAllOrdersByUserId hateoas
+                - copy getAllOrdersByUserId method from OrderController
+                - change return type to Resources<Order>
+                - refactor to have all order return as Resources
+            - go back to getAllUsers and add relationship link with getAllOrderByUserId
+                - under the user.add(selfLink) line, add code to get Resource<Order> and add to user
+            - create a selflink for getAllUsers
+                - below the loop block add selflink code, and add to resources 
+    - refactor getAllOrders to return Resource<Order>
+    - write unit test for getAllOrders, getAllUsers
+        - create OrderIntegrationHateoasTest 
+            - write test for getAllOrders & getAllOrdersByUserId
+        - add getAllUsers test to verify selflink and links returned for each users on list
+
+        
