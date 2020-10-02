@@ -462,4 +462,22 @@ Sample project using Spring Boot 2 and Java
         - create UserIntegrationHateoasTest 
         - write test to verify selflink is returned
         
-4) implement self and relationship link in getAllUsers method
+4) implement self link in getAllUsers, and relationship link with getAllOrdersByUserId
+    - refactor getAllUsers hateoas
+        - implement selflink for each user on list / add loop and selflink logic
+        - create relationship link with getAllOrderByUserId
+            - add and refactor getAllOrdersByUserId hateoas
+                - copy getAllOrdersByUserId method from OrderController
+                - change return type to Resources<Order>
+                - refactor to have all order return as Resources
+            - go back to getAllUsers and add relationship link with getAllOrderByUserId
+                - under the user.add(selfLink) line, add code to get Resource<Order> and add to user
+            - create a selflink for getAllUsers
+                - below the loop block add selflink code, and add to resources 
+    - refactor getAllOrders to return Resource<Order>
+    - write unit test for getAllOrders, getAllUsers
+        - create OrderIntegrationHateoasTest 
+            - write test for getAllOrders & getAllOrdersByUserId
+        - add getAllUsers test to verify selflink and links returned for each users on list
+
+        
