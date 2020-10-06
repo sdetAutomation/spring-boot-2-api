@@ -542,6 +542,15 @@ Sample project using Spring Boot 2 and Java
     - send fields using REST service query parameters to retrieve the data for those respective fields
     
     - Create new UserMappingJacksonController class
-        - Copy getUserById methods
+        - copy getUserById method from UserController
+        - add proper annotations
     - go to User Model and comment out @JsonIgnore and @JsonIgnoreProperties and revert nullable to false
     - update / comment in code from UserControllerTest to check for firstname, lastname, and ssn
+    
+    - go to UserMappingJacksonController
+        - edit getUserById code
+        - change return type to MappingJacksonValue
+        - add code to define fields that should be seen, use FilterProvider and MappingJacksonValue to return mapped value
+        - add name given in FilterProvider ("userFilter") to User Model as @JsonFilter("userFilter") annotation at the class level
+
+        

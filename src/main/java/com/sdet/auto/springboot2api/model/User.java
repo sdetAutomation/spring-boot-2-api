@@ -1,5 +1,6 @@
 package com.sdet.auto.springboot2api.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.hateoas.ResourceSupport;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "user") // this will be the name of the table.  Defaults to the entity name if name field not defined
 //@JsonIgnoreProperties({"firstname", "lastname"}) -- this is part of static filtering @JsonIgnore (please see that commit)
+@JsonFilter("userFilter")
 public class User extends ResourceSupport {
 
     @Id // this annotation will make variable as a primary key
