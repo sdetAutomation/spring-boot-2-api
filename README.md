@@ -553,4 +553,10 @@ Sample project using Spring Boot 2 and Java
         - add code to define fields that should be seen, use FilterProvider and MappingJacksonValue to return mapped value
         - add name given in FilterProvider ("userFilter") to User Model as @JsonFilter("userFilter") annotation at the class level
 
+    - convert dynamic filtering by using @RequestParams
+        - go to UserMappingJacksonController
+        - copy paste getUserById and rename method to getUserById2
+            - add params to @GetMapping
+            - add @RequestParam for fields
+            - remove hardcoded field values
         
