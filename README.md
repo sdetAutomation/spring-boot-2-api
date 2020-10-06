@@ -10,7 +10,8 @@ Sample project using Spring Boot 2 and Java
 #### 02-hello-world
 1) Create Java class and add hello world code
 2) Create a test for hello world endpoint
-3) Create UserDetails Bean
+3) Create UserDetails Bean 
+    - Bean - is an object that is instantiated, assembled, and managed by a Spring
     - Create UserDetails Model
     - Add method and mapping in HelloController
     - Write a test for new endpoint
@@ -480,4 +481,38 @@ Sample project using Spring Boot 2 and Java
             - write test for getAllOrders & getAllOrdersByUserId
         - add getAllUsers test to verify selflink and links returned for each users on list
 
-        
+#### 10-internationalization
+
+- Internationalization is the process of making our application adaptable to different languages.  
+
+- spring boot provides LocaleResolver and ResourceBundleMessageSource which will handle the internationalization
+
+1) create required beans and message property files per language
+    - define a bean named LocaleResolver
+        - go to SpringBoot2ApiApplication class file
+        - create method for LocaleResolver
+        - set default as Locale.US
+        - add @Bean annotation
+    - add property files for messages
+        - add messages.properties
+        - add messages_cn.properties
+        - add messages_de.properties
+   
+2) create rest service to convert it to support internationalization
+    - ResourceBundleMessageSource
+        - go to SpringBoot2ApiApplication class file
+        - create method for ResourceBundleMessageSource
+        - add @Bean annotation
+        - Create a getMessagesInI18NFormat method
+        - go to HelloController
+        - add a new method getMessagesInI18NFormat 
+            - add proper annotations for method and ResourceBundleMessageSource field
+            - please see example in HelloController for proper setup
+        - write unit test to check configurations / methods / controller are setup correctly
+            go to HelloTest and add tests for all languages
+    - simplify getMessagesInI18NFormat method
+        - please see example in HelloController for proper setup
+        - remove params from method
+        - leverage LocaleContextHolder.getLocale()
+        - write unit test to check configurations / methods / controller are setup correctly
+            - create helper function for creating a header with Accept-Language
