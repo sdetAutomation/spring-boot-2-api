@@ -497,6 +497,8 @@ Sample project using Spring Boot 2 and Java
         - add messages.properties
         - add messages_cn.properties
         - add messages_de.properties
+   
+2) create rest service to convert it to support internationalization
     - ResourceBundleMessageSource
         - go to SpringBoot2ApiApplication class file
         - create method for ResourceBundleMessageSource
@@ -514,10 +516,3 @@ Sample project using Spring Boot 2 and Java
         - leverage LocaleContextHolder.getLocale()
         - write unit test to check configurations / methods / controller are setup correctly
             - create helper function for creating a header with Accept-Language
-    
-2) create rest service to convert it to support internationalization
-    
-        
-    
-
-    
