@@ -516,3 +516,32 @@ Sample project using Spring Boot 2 and Java
         - leverage LocaleContextHolder.getLocale()
         - write unit test to check configurations / methods / controller are setup correctly
             - create helper function for creating a header with Accept-Language
+
+#### 11-filtering
+
+- apply @JsonIgnore at the field level in model class
+- apply @JsonIgnoreProperties at the class level in model, and define list of fields that can be ignored
+- these annotations simply hides the fields from the Jackson parser
+
+1) static filtering
+    - Model / entity level
+    - @JsonIgnore apply to SSN field
+    - @JsonIgnoreProperties apply to firstname and lastname
+    - go to User model
+        - add @JsonIgnore to ssn field
+        - add @JsonIgnoreProperties({"firstname", "lastname"}) at the class level
+        - due to "Ignore" statements above, firstname, lastname, and ssn will no longer be returned in the response.
+        it will break existing tests.  The fix is to make firstname, lastname, and ssn nullable
+        - set firstname, lastname, and ssn to nullable=true
+    - fix broken test - comment out asserts that check firstname, lastname, and ssn
+
+2) dynamic filtering 
+    - @JsonFilter
+    - Rest logic related to filtering will be defined in service or controller
+    - implement with a basic has set
+    - send fields using REST service query parameters to retrieve the data for those respective fields
+    
+    - Create new UserMappingJacksonController class
+        - Copy getUserById methods
+    - go to User Model and comment out @JsonIgnore and @JsonIgnoreProperties and revert nullable to false
+    - update / comment in code from UserControllerTest to check for firstname, lastname, and ssn

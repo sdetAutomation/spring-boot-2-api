@@ -59,11 +59,11 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].userId").value(td_id))
                 .andExpect(jsonPath("$[0].username").value(td_userName))
-                .andExpect(jsonPath("$[0].firstname").value(td_firstName))
-                .andExpect(jsonPath("$[0].lastname").value(td_lastName))
+//                .andExpect(jsonPath("$[0].firstname").value(td_firstName))
+//                .andExpect(jsonPath("$[0].lastname").value(td_lastName))
                 .andExpect(jsonPath("$[0].email").value(td_email))
                 .andExpect(jsonPath("$[0].role").value(td_role))
-                .andExpect(jsonPath("$[0].ssn").value(td_ssn))
+//                .andExpect(jsonPath("$[0].ssn").value(td_ssn))
                 .andExpect(jsonPath("$[0].orders").isEmpty());
     }
 
@@ -90,11 +90,11 @@ public class UserControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.userId").value(td_id))
                 .andExpect(jsonPath("$.username").value(td_userName))
-                .andExpect(jsonPath("$.firstname").value(td_firstName))
-                .andExpect(jsonPath("$.lastname").value(td_lastName))
+//                .andExpect(jsonPath("$.firstname").value(td_firstName))
+//                .andExpect(jsonPath("$.lastname").value(td_lastName))
                 .andExpect(jsonPath("$.email").value(td_email))
-                .andExpect(jsonPath("$.role").value(td_role))
-                .andExpect(jsonPath("$.ssn").value(td_ssn));
+                .andExpect(jsonPath("$.role").value(td_role));
+//                .andExpect(jsonPath("$.ssn").value(td_ssn));
     }
 
     @Test
@@ -116,11 +116,11 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(td_id))
                 .andExpect(jsonPath("$.username").value(td_userName))
-                .andExpect(jsonPath("$.firstname").value(td_firstName))
-                .andExpect(jsonPath("$.lastname").value(td_lastName))
+//                .andExpect(jsonPath("$.firstname").value(td_firstName))
+//                .andExpect(jsonPath("$.lastname").value(td_lastName))
                 .andExpect(jsonPath("$.email").value(td_email))
                 .andExpect(jsonPath("$.role").value(td_role))
-                .andExpect(jsonPath("$.ssn").value(td_ssn))
+//                .andExpect(jsonPath("$.ssn").value(td_ssn))
                 .andExpect(jsonPath("$.orders").isEmpty());
     }
 
@@ -169,11 +169,11 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(td_id))
                 .andExpect(jsonPath("$.username").value(td_userName))
-                .andExpect(jsonPath("$.firstname").value(td_firstName))
-                .andExpect(jsonPath("$.lastname").value(td_lastName))
+//                .andExpect(jsonPath("$.firstname").value(td_firstName))
+//                .andExpect(jsonPath("$.lastname").value(td_lastName))
                 .andExpect(jsonPath("$.email").value(td_email))
-                .andExpect(jsonPath("$.role").value(td_role))
-                .andExpect(jsonPath("$.ssn").value(td_ssn));
+                .andExpect(jsonPath("$.role").value(td_role));
+//                .andExpect(jsonPath("$.ssn").value(td_ssn));
     }
 
     @Test
