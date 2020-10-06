@@ -24,15 +24,15 @@ public class HelloWorldIntegrationTest {
 
     private final String path = "/hello-int/";
 
+    private final String path2 = "/hello-int2/";
+
+
     @Test
     public void locale_tc0001_helloWorld_en() throws Exception {
         String td_locale = "us";
         String td_response= "Hello World";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set("Accept-Language", td_locale);
+        HttpHeaders headers = getHeaderLang(td_locale);
 
         HttpEntity request = new HttpEntity(headers);
         ResponseEntity<String> response = restTemplate.exchange(path, HttpMethod.GET, request, String.class);
@@ -46,10 +46,7 @@ public class HelloWorldIntegrationTest {
         String td_locale = "de";
         String td_response= "Hallo Welt";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set("Accept-Language", td_locale);
+        HttpHeaders headers = getHeaderLang(td_locale);
 
         HttpEntity request = new HttpEntity(headers);
         ResponseEntity<String> response = restTemplate.exchange(path, HttpMethod.GET, request, String.class);
@@ -63,15 +60,62 @@ public class HelloWorldIntegrationTest {
         String td_locale = "fr";
         String td_response= "Bonjour le monde";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set("Accept-Language", td_locale);
+        HttpHeaders headers = getHeaderLang(td_locale);
 
         HttpEntity request = new HttpEntity(headers);
         ResponseEntity<String> response = restTemplate.exchange(path, HttpMethod.GET, request, String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(td_response, response.getBody());
+    }
+
+    @Test
+    public void locale_tc0004_helloWorld_en2() throws Exception {
+        String td_locale = "us";
+        String td_response= "Hello World";
+
+        HttpHeaders headers = getHeaderLang(td_locale);
+
+        HttpEntity request = new HttpEntity(headers);
+        ResponseEntity<String> response = restTemplate.exchange(path2, HttpMethod.GET, request, String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(td_response, response.getBody());
+    }
+
+    @Test
+    public void locale_tc0005_helloWorld_de2() throws Exception {
+        String td_locale = "de";
+        String td_response= "Hallo Welt";
+
+        HttpHeaders headers = getHeaderLang(td_locale);
+
+        HttpEntity request = new HttpEntity(headers);
+        ResponseEntity<String> response = restTemplate.exchange(path2, HttpMethod.GET, request, String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(td_response, response.getBody());
+    }
+
+    @Test
+    public void locale_tc0006_helloWorld_fr2() throws Exception {
+        String td_locale = "fr";
+        String td_response= "Bonjour le monde";
+
+        HttpHeaders headers = getHeaderLang(td_locale);
+
+        HttpEntity request = new HttpEntity(headers);
+        ResponseEntity<String> response = restTemplate.exchange(path2, HttpMethod.GET, request, String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(td_response, response.getBody());
+    }
+
+    private HttpHeaders getHeaderLang(String locale) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("Accept-Language", locale);
+        return headers;
     }
 }

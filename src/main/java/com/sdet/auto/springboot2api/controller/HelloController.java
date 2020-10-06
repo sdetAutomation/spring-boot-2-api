@@ -2,6 +2,7 @@ package com.sdet.auto.springboot2api.controller;
 
 import com.sdet.auto.springboot2api.model.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +28,10 @@ public class HelloController {
     @GetMapping("/hello-int")
     public String getMessagesInI18NFormat(@RequestHeader(name = "Accept-Language", required = false) String locale) {
         return messageSource.getMessage("label.hello", null, new Locale(locale));
+    }
+
+    @GetMapping("/hello-int2")
+    public String getMessagesInI18NFormat() {
+        return messageSource.getMessage("label.hello", null, LocaleContextHolder.getLocale());
     }
 }

@@ -501,15 +501,22 @@ Sample project using Spring Boot 2 and Java
         - go to SpringBoot2ApiApplication class file
         - create method for ResourceBundleMessageSource
         - add @Bean annotation
-        
-2) create rest service to convert it to support internationalization
-    - Create a getMessagesInI18NFormat method
-    - go to HelloController
-    - add a new method getMessagesInI18NFormat 
-        - add proper annotations for method and ResourceBundleMessageSource field
+        - Create a getMessagesInI18NFormat method
+        - go to HelloController
+        - add a new method getMessagesInI18NFormat 
+            - add proper annotations for method and ResourceBundleMessageSource field
+            - please see example in HelloController for proper setup
+        - write unit test to check configurations / methods / controller are setup correctly
+            go to HelloTest and add tests for all languages
+    - simplify getMessagesInI18NFormat method
         - please see example in HelloController for proper setup
-    - write unit test to check configurations / methods / controller are setup correctly
-        go to HelloTest and add tests for all languages
+        - remove params from method
+        - leverage LocaleContextHolder.getLocale()
+        - write unit test to check configurations / methods / controller are setup correctly
+            - create helper function for creating a header with Accept-Language
+    
+2) create rest service to convert it to support internationalization
+    
         
     
 
