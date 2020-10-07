@@ -25,9 +25,6 @@ public class OrderIntegrationHateoasTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private OrderRepository orderRepository;
-
     private final String path = "/hateoas/orders/";
 
     @Test

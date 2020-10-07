@@ -516,3 +516,68 @@ Sample project using Spring Boot 2 and Java
         - leverage LocaleContextHolder.getLocale()
         - write unit test to check configurations / methods / controller are setup correctly
             - create helper function for creating a header with Accept-Language
+
+#### 11-filtering
+
+- apply @JsonIgnore at the field level in model class
+- apply @JsonIgnoreProperties at the class level in model, and define list of fields that can be ignored
+- these annotations simply hides the fields from the Jackson parser
+
+1) static filtering
+    - Model / entity level
+    - @JsonIgnore apply to SSN field
+    - @JsonIgnoreProperties apply to firstname and lastname
+    - go to User model
+        - add @JsonIgnore to ssn field
+        - add @JsonIgnoreProperties({"firstname", "lastname"}) at the class level
+        - due to "Ignore" statements above, firstname, lastname, and ssn will no longer be returned in the response.
+        it will break existing tests.  The fix is to make firstname, lastname, and ssn nullable
+        - set firstname, lastname, and ssn to nullable=true
+    - fix broken test - comment out asserts that check firstname, lastname, and ssn
+
+2) dynamic filtering 
+    - @JsonFilter
+    - Rest logic related to filtering will be defined in service or controller
+    - implement with a basic has set
+    - send fields using REST service query parameters to retrieve the data for those respective fields
+    
+    - Create new UserMappingJacksonController class
+        - copy getUserById method from UserController
+        - add proper annotations
+    - go to User Model and comment out @JsonIgnore and @JsonIgnoreProperties and revert nullable to false
+    - update / comment in code from UserControllerTest to check for firstname, lastname, and ssn
+    
+    - go to UserMappingJacksonController
+        - edit getUserById code
+        - change return type to MappingJacksonValue
+        - add code to define fields that should be seen, use FilterProvider and MappingJacksonValue to return mapped value
+        - add name given in FilterProvider ("userFilter") to User Model as @JsonFilter("userFilter") annotation at the class level
+
+    - convert dynamic filtering by using @RequestParams
+        - go to UserMappingJacksonController
+        - copy paste getUserById and rename method to getUserById2
+            - add params to @GetMapping
+            - add @RequestParam for fields
+            - remove hardcoded field values
+    
+    - user @JsonView to customize views
+    - useful if we have a single model which needs to provide different views to different category of clients
+        - example: a view for external view vs internal view (example: employee management: normal vs manager vs hr view)
+    - in User Model comment out @JsonFilter("userFilter") -- this is for MappingJacksonValue filtering
+    - in the model folder create a Views class
+        - create 2 static classes (external, internal)
+    - in the User Model
+        - annotate fields in User Entity with @JsonView
+        - decide which fields should be external and internal and annotate accordingly
+    - in the Controller Layer
+        - create a new controller UserJsonViewController
+        - copy getUserById method from UserController and create 2 methods
+            - external getUserById
+                - @JsonView(Views.External.class)
+            - internal getUserById2
+                - @JsonView(Views.Internal.class)
+    - in the Order model
+        - annotate fields in Order Entity with @JsonView
+    - write unit test to check internal vs external endpoints
+        - create a test file UserIntegrationJsonViewTest
+        - write test for external and internal endpoints
