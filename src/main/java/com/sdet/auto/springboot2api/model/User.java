@@ -3,6 +3,7 @@ package com.sdet.auto.springboot2api.model;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.hateoas.ResourceSupport;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -14,38 +15,46 @@ import java.util.List;
 @Entity
 @Table(name = "user") // this will be the name of the table.  Defaults to the entity name if name field not defined
 //@JsonIgnoreProperties({"firstname", "lastname"}) -- this is part of static filtering @JsonIgnore (please see that commit)
-@JsonFilter("userFilter")
+//@JsonFilter("userFilter") -- this is for MappingJacksonValue filtering
 public class User extends ResourceSupport {
 
     @Id // this annotation will make variable as a primary key
     @GeneratedValue
+    @JsonView(Views.External.class)
     private Long userId; // refactored this name due to hateoas has default field as "id"
 
     // defaults to field name if you do not define name)
     @NotEmpty(message="Username is a required field.  Please provide a username")
     @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
+    @JsonView(Views.External.class)
     private String username;
 
     @Size(min=2, message="FirstName should contain at least 2 characters")
     @Column(name = "FIRST_NAME", length = 50, nullable = false)
+    @JsonView(Views.External.class)
     private String firstname;
 
     @Column(name = "LAST_NAME", length = 50, nullable = false)
+    @JsonView(Views.External.class)
     private String lastname;
 
     @Column(name = "EMAIL_ADDRESS", length = 50, nullable = false)
+    @JsonView(Views.External.class)
     private String email;
 
     @Column(name = "ROLE", length = 50, nullable = false)
+    @JsonView(Views.Internal.class)
     private String role;
 
 //    @JsonIgnore -- this is part of static filtering @JsonIgnore (please see that commit)
     @Column(name = "SSN", length = 11, nullable = false, unique = true)
+    @JsonView(Views.Internal.class)
     private String ssn;
 
     // order is the owner of the relationship. We don't want to create a foreign key in both tables, we can make user
     // as the foreign key, which will create a column for user in the order table.  User side is the referencing side
     @OneToMany(mappedBy = "user")
+    @JsonView(Views.Internal.class)
     private List<Order> orders;
 
     // No Argument Constructor

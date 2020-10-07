@@ -1,6 +1,7 @@
 package com.sdet.auto.springboot2api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.hateoas.ResourceSupport;
 import javax.persistence.*;
 
@@ -10,8 +11,10 @@ public class Order extends ResourceSupport {
 
     @Id
     @GeneratedValue
+    @JsonView(Views.Internal.class)
     private Long order_id;
 
+    @JsonView(Views.Internal.class)
     private String order_description;
 
     // multiple orders can be associated with one user

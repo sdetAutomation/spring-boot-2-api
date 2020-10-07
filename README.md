@@ -559,4 +559,25 @@ Sample project using Spring Boot 2 and Java
             - add params to @GetMapping
             - add @RequestParam for fields
             - remove hardcoded field values
-        
+    
+    - user @JsonView to customize views
+    - useful if we have a single model which needs to provide different views to different category of clients
+        - example: a view for external view vs internal view (example: employee management: normal vs manager vs hr view)
+    - in User Model comment out @JsonFilter("userFilter") -- this is for MappingJacksonValue filtering
+    - in the model folder create a Views class
+        - create 2 static classes (external, internal)
+    - in the User Model
+        - annotate fields in User Entity with @JsonView
+        - decide which fields should be external and internal and annotate accordingly
+    - in the Controller Layer
+        - create a new controller UserJsonViewController
+        - copy getUserById method from UserController and create 2 methods
+            - external getUserById
+                - @JsonView(Views.External.class)
+            - internal getUserById2
+                - @JsonView(Views.Internal.class)
+    - in the Order model
+        - annotate fields in Order Entity with @JsonView
+    - write unit test to check internal vs external endpoints
+        - create a test file UserIntegrationJsonViewTest
+        - write test for external and internal endpoints
