@@ -625,3 +625,25 @@ which entity fields should be made available for publicly exposed REST api
         - create UserIntegrationDtoTest class
         - write unit test for new endpoint
 
+4) utilize MapStruct for DTO
+
+- is a code generator, and is generated at compile time, not runtime, and reflection is not used
+
+- solves the issue of generating beans mapper classes.  It will generate bean mapper classes automatically
+
+- requires a plugin to be added to pom.xml (mapstruct-processor) is used to generate the mapper implementation during build phage
+
+    - update pom.xml (see pom.xml for details)
+        - add mapstruct and maven plugin version in properties
+        - add mapstruct dependency
+        - add plugins for mapstruct
+    
+    - create UserMsDTO (Ms = map struct)
+        - add fields userId, userName, and emailAddress (userName and emailAddress are different to show mapping of DTO)
+        - create 2 constructors, one all args, one no args
+        
+    - create Mapper Interface
+    
+    - create REST service by calling methods defined in MapStruct Mapper
+    
+      
