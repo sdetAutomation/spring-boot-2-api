@@ -610,7 +610,18 @@ which entity fields should be made available for publicly exposed REST api
         - create model mapper method and annotate @Bean
     
 3) create new DTO package as UserMmDTO (Mm = model mapper)
+    - create new package dto
+    - create new class UserMmDto
+        - add fields for example
+        - generate getter and setter
+    - go to UserService and add getUserByIdMm
+    - go to UserServiceImpl add getUserByIdMm method 
+        - will need to add @Autowire ModelMapper at the top of the class
+        - add conversion of user to UserMmDto code
+        - change return to UserMmDto
+    - create new UserModelMapperController and copy getUserById and rename to getUserDtoById
+        - write to use userService.getUserByIdMm(id)
+    - write unit tests
+        - create UserIntegrationDtoTest class
+        - write unit test for new endpoint
 
-4) create new UserModelMapperController and copy getUserById and rename to getUserDtoById
-
-5) write unit tests
