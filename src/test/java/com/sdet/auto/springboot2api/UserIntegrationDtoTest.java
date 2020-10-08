@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.io.IOException;
+import java.util.List;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,6 +25,8 @@ public class UserIntegrationDtoTest {
     private TestRestTemplate restTemplate;
 
     private final String path_mm = "/modelmapper/users/";
+
+    private final String path_ms = "/mapstruct/users/";
 
     @Test
     public void user_dto_tc0001_getByUserId_Mm() {
@@ -43,5 +48,19 @@ public class UserIntegrationDtoTest {
         assertNull(user.getRole());
         assertNull(user.getSsn());
         assertFalse(user.getOrders().isEmpty());
+    }
+
+    @Test
+    public void user_dto_tc0002_getAllUsers_Ms() throws IOException {
+        ResponseEntity<List> response = restTemplate.getForEntity(path_ms, List.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(3, response.getBody().size());
+
+        String body = response.getBody().get(0).toString();
+        // assert expected DTO field names
+        assertThat(body, containsString("userId"));
+        assertThat(body, containsString("userName"));
+        assertThat(body, containsString("emailAddress"));
     }
 }

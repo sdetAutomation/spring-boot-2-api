@@ -643,6 +643,18 @@ which entity fields should be made available for publicly exposed REST api
         - create 2 constructors, one all args, one no args
         
     - create Mapper Interface
+        - create mapper package
+        - create UserMapper class
+        - add @Mapper(componentModel = "Spring") at the class level
+        - define INSTANCE
+        - define User to UserMsDto method name (Input User Obj > Output UserMsDto)
+        - define List<User> to List<UserMsDto> method name (Input List<User> Obj > Output List<UserMsDto>)
+        - add @Mappings & @Mapping for source and target (since model / entity names are different from UserMsDto)
+    
+    - create UserMapStructController
+        - add annotations 
+        - add method for getAllUsersDto using userMapper.userToUserDto method
+        - add unit test for testing new controller endpoint 
     
     - create REST service by calling methods defined in MapStruct Mapper
     
