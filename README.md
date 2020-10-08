@@ -581,3 +581,36 @@ Sample project using Spring Boot 2 and Java
     - write unit test to check internal vs external endpoints
         - create a test file UserIntegrationJsonViewTest
         - write test for external and internal endpoints
+
+#### 12-dto-data-transfer-object
+
+- exposing the model / entity object through a REST endpoint can be a security issue if we do not carefully protect 
+which entity fields should be made available for publicly exposed REST api
+
+- ModelMapper supports converting model / entity objects to DTO and vice versa (info: modelmapper.org)
+
+- refactoring safe, simple fluent API for handling special use cases, and API is type safe and refactoring safe
+
+1) add model mapper dependency in pom.xml
+    - add following to pom.xml
+
+```
+<dependency>
+    <groupId>org.modelmapper</groupId>
+    <artifactId>modelmapper</artifactId>
+    <version>2.3.8</version>
+</dependency>
+```
+
+2) define model mapper bean in AppConfig
+    - create a config package
+    - create AppConfig class
+        - annotate @Configuration
+    - define ModelMapper bean in configuration class
+        - create model mapper method and annotate @Bean
+    
+3) create new DTO package as UserMmDTO (Mm = model mapper)
+
+4) create new UserModelMapperController and copy getUserById and rename to getUserDtoById
+
+5) write unit tests
