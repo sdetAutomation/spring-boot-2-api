@@ -581,3 +581,87 @@ Sample project using Spring Boot 2 and Java
     - write unit test to check internal vs external endpoints
         - create a test file UserIntegrationJsonViewTest
         - write test for external and internal endpoints
+
+#### 12-dto-data-transfer-object
+
+- exposing the model / entity object through a REST endpoint can be a security issue if we do not carefully protect 
+which entity fields should be made available for publicly exposed REST api
+
+- ModelMapper supports converting model / entity objects to DTO and vice versa (info: modelmapper.org)
+
+- refactoring safe, simple fluent API for handling special use cases, and API is type safe and refactoring safe
+
+1) add model mapper dependency in pom.xml
+    - add following to pom.xml
+
+```
+<dependency>
+    <groupId>org.modelmapper</groupId>
+    <artifactId>modelmapper</artifactId>
+    <version>2.3.8</version>
+</dependency>
+```
+
+2) define model mapper bean in AppConfig
+    - create a config package
+    - create AppConfig class
+        - annotate @Configuration
+    - define ModelMapper bean in configuration class
+        - create model mapper method and annotate @Bean
+    
+3) create new DTO package as UserMmDTO (Mm = model mapper)
+    - create new package dto
+    - create new class UserMmDto
+        - add fields for example
+        - generate getter and setter
+    - go to UserService and add getUserByIdMm
+    - go to UserServiceImpl add getUserByIdMm method 
+        - will need to add @Autowire ModelMapper at the top of the class
+        - add conversion of user to UserMmDto code
+        - change return to UserMmDto
+    - create new UserModelMapperController and copy getUserById and rename to getUserDtoById
+        - write to use userService.getUserByIdMm(id)
+    - write unit tests
+        - create UserIntegrationDtoTest class
+        - write unit test for new endpoint
+
+4) utilize MapStruct for DTO
+
+- is a code generator, and is generated at compile time, not runtime, and reflection is not used
+
+- solves the issue of generating beans mapper classes.  It will generate bean mapper classes automatically
+
+- requires a plugin to be added to pom.xml (mapstruct-processor) is used to generate the mapper implementation during build phage
+
+    - update pom.xml (see pom.xml for details)
+        - add mapstruct and maven plugin version in properties
+        - add mapstruct dependency
+        - add plugins for mapstruct
+    
+    - create UserMsDTO (Ms = map struct)
+        - add fields userId, userName, and emailAddress (userName and emailAddress are different to show mapping of DTO)
+        - create 2 constructors, one all args, one no args
+        
+    - create Mapper Interface
+        - create mapper package
+        - create UserMapper class
+        - add @Mapper(componentModel = "Spring") at the class level
+        - define INSTANCE
+        - define User to UserMsDto method name (Input User Obj > Output UserMsDto)
+        - define List<User> to List<UserMsDto> method name (Input List<User> Obj > Output List<UserMsDto>)
+        - add @Mappings & @Mapping for source and target (since model / entity names are different from UserMsDto)
+    
+    - create UserMapStructController
+        - add annotations 
+        - add method for getAllUsersDto using userMapper.userToUserDto method
+        - add unit test for testing new controller endpoint 
+    
+    - create getUserByIdMsDto using userMapper.userToUserDto method
+        - go to UserService and add getUserByIdMs
+        - go to UserServiceImpl and add getUserByIdMs method
+        - go to UserMapStructController and define getUserByIdDto method
+    
+    - refactor UserMapStructController getAllUsersDto method to call userService
+        - go to UserService and add getAllUsersMs
+        - go to UserServiceImpl implement getAllUsersMs method
+        - go to UserMapStructController refactor to userService.getAllUsersMs()
