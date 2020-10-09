@@ -24,9 +24,9 @@ public class UserRepositoryIntegrationTest {
     @Before
     public void setUp() {
         User user1 = new User(null,"username1", "firstname1", "lastname1",
-                "email1", "role1", "ssn1", null);
+                "email1", "role1", "", "ssn1", null);
         User user2 = new User(null,"username2", "firstname2", "lastname2",
-                "email2", "role2", "ssn2", null);
+                "email2", "role2", "", "ssn2", null);
         // perform save
         this.userRepository.save(user1);
         this.userRepository.save(user2);

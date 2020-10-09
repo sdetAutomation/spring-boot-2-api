@@ -681,10 +681,8 @@ which entity fields should be made available for publicly exposed REST api
 2) implement url versioning
     - go to controller package create UserUriVersioningController
     - use ModelMapper to transfer Entity to dto
-    - implemement getUserByIdv1 and getUserByIdv2 methods with uri's
-    
+    - implement getUserByIdv1 and getUserByIdv2 methods with uri's
     - uri versions
-        - @GetMapping({"/v1/{id}", "/v2/{id}")
+        - @GetMapping({"/v1/{id}", "/v1.1/{id}")
         - @GetMapping("/v2/{id}")
-        
         
