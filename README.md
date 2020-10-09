@@ -656,6 +656,7 @@ which entity fields should be made available for publicly exposed REST api
         - add method for getAllUsersDto using userMapper.userToUserDto method
         - add unit test for testing new controller endpoint 
     
-    - create REST service by calling methods defined in MapStruct Mapper
-    
-      
+    - create getUserByIdMsDto using userMapper.userToUserDto method
+        - go to UserService and add getUserByIdMs
+        - go to UserServiceImpl and add getUserByIdMs method
+        - go to UserMapStructController and define getUserByIdDto method

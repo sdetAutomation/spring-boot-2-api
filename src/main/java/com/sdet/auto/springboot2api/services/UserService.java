@@ -1,6 +1,7 @@
 package com.sdet.auto.springboot2api.services;
 
 import com.sdet.auto.springboot2api.dto.UserMmDto;
+import com.sdet.auto.springboot2api.dto.UserMsDto;
 import com.sdet.auto.springboot2api.exceptions.UserExistsException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
@@ -16,6 +17,8 @@ public interface UserService {
     Optional<User> getUserById(Long id) throws UserNotFoundException;
 
     UserMmDto getUserByIdMm(Long id) throws UserNotFoundException;
+
+    UserMsDto getUserByIdMs(Long id) throws UserNotFoundException;
 
     User updateUserById(Long id, User user) throws UserNotFoundException;
 
