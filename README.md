@@ -686,3 +686,67 @@ which entity fields should be made available for publicly exposed REST api
         - @GetMapping({"/v1/{id}", "/v1.1/{id}")
         - @GetMapping("/v2/{id}")
         
+#### 14-swagger
+
+- swagger is used to document an api, and helps users understand how to implement their client apps
+
+1) add springfox dependencies to pom.sml
+    ```
+   		<dependency>
+   			<groupId>io.springfox</groupId>
+   			<artifactId>springfox-swagger2</artifactId>
+   			<version>2.9.2</version>
+   		</dependency>
+   		
+   		<dependency>
+   			<groupId>io.springfox</groupId>
+   			<artifactId>springfox-swagger-ui</artifactId>
+   			<version>2.9.2</version>
+   		</dependency>
+   ```
+    
+2) create SwaggerConfig file
+    - annotate with @Configuration
+    - annotate with @EnableSwagger2
+    - create a Docket bean and annotate with @Bean
+    - swagger metadata URL
+        - http://localhost:8080/v2/api-docs
+        - verify swagger yml online at https://editor.swagger.io/
+    - swagger ui url
+        - http://localhost:8080/swagger-ui.html
+
+3) add API info to modify header of our documentation
+    - create a new class "AppInfo"
+    - update the Docket bean with AppInfo
+
+4) restrict scope of swagger documentation generation using API base packages and paths
+    - update base package in RequestHandlerSelectors.basepackage
+    - update PathSelectors.ant("/users/**) to limit to specific paths
+    
+5) auto populate documentation for JSR-303 Validations
+    - JSR-303 Spec: https://beanvalidation.org/1.0/spec
+    - add dependency in pom.xml and restart embedded tomca
+   
+   ``` 
+
+   ```
+   
+  -@Import(BeanValidatorPluginsConfiguration.class) on top of the swagger configuration
+  
+  - verify Models in Swagger UI
+   
+
+6) add swagger Core annotation to Model class
+    - class level
+    - @ApiModel(description = "Used create a new user")
+    - field level: notes, required, position, unorder without position
+        - @ApiModelProperty(notes = "userId - Unique identifier of user", required = true)
+
+7) add swagger Core annotation to Controller Class
+    - controller
+        -@Api(tag = "Use Management RESTful Services", value = "UserController", description)
+    - method level
+        - @ApiOperation(value = "create a new user")
+    - parameter level
+        - @ApiParam("User information for a new user created)
+    - produces
