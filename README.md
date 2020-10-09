@@ -665,3 +665,26 @@ which entity fields should be made available for publicly exposed REST api
         - go to UserService and add getAllUsersMs
         - go to UserServiceImpl implement getAllUsersMs method
         - go to UserMapStructController refactor to userService.getAllUsersMs()
+        
+#### 13-versioning
+
+- uri versioning (example: /users/v1/101)
+
+1) Create 2 dto's and add a field on Model named "address"
+    - go to UserModel add new field named "address"
+        - generate getter & setter, new all args constructor, and tostring 
+    - update data.sql
+    - go to dto layer
+        - create new UserDtoV1 class - contains all fields except "address"
+        - create new UserDtoV2 class - contains all fields including "address"
+
+2) implement url versioning
+    - go to controller package create UserUriVersioningController
+    - use ModelMapper to transfer Entity to dto
+    - implemement getUserByIdv1 and getUserByIdv2 methods with uri's
+    
+    - uri versions
+        - @GetMapping({"/v1/{id}", "/v2/{id}")
+        - @GetMapping("/v2/{id}")
+        
+        

@@ -57,24 +57,30 @@ public class User extends ResourceSupport {
     @JsonView(Views.Internal.class)
     private List<Order> orders;
 
+    @Column(name = "ADDRESS")
+    private String address;
+
     // No Argument Constructor
     public User() {
     }
 
     // Fields Constructor
+
+
     public User(Long userId, @NotEmpty(message = "Username is a required field.  Please provide a username")
             String username, @Size(min = 2, message = "FirstName should contain at least 2 characters")
-            String firstname, String lastname, String email, String role, String ssn, List<Order> orders) {
+            String firstname, String lastname, String email, String role, String address, String ssn,
+                List<Order> orders) {
         this.userId = userId;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.role = role;
+        this.address = address;
         this.ssn = ssn;
         this.orders = orders;
     }
-
 
     // Getters and Setters
     public Long getUserId() {
@@ -141,6 +147,14 @@ public class User extends ResourceSupport {
         this.orders = orders;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     // for troubleshooting
     @Override
     public String toString() {
@@ -151,6 +165,7 @@ public class User extends ResourceSupport {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", address='" + address + '\'' +
                 ", ssn='" + ssn + '\'' +
                 ", orders=" + orders +
                 '}';

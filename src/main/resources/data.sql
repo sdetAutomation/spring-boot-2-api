@@ -1,6 +1,6 @@
-insert into user values(101, 'darth.vader@gmail.com', 'darth', 'vader', 'admin', 'ssn-01-0000', 'darth.vader');
-insert into user values(102, 'super.man@gmail.com', 'super', 'man', 'admin', 'ssn-02-0000', 'super.man');
-insert into user values(103, 'thor@gmail.com', 'thor', 'odinson', 'admin', 'ssn-03-0000', 'thor.odinson');
+insert into user values(101, 'tatooine', 'darth.vader@gmail.com', 'darth', 'vader', 'admin', 'ssn-01-0000', 'darth.vader');
+insert into user values(102, 'krypton', 'super.man@gmail.com', 'super', 'man', 'admin', 'ssn-02-0000', 'super.man');
+insert into user values(103, 'asgardian', 'thor@gmail.com', 'thor', 'odinson', 'admin', 'ssn-03-0000', 'thor.odinson');
 
 -- one way to create the data for order
 --insert into orders values( 2001, 'order11', 101);
