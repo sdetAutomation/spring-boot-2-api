@@ -2,8 +2,6 @@ package com.sdet.auto.springboot2api.controller;
 
 import com.sdet.auto.springboot2api.dto.UserMsDto;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
-import com.sdet.auto.springboot2api.mappers.UserMapper;
-import com.sdet.auto.springboot2api.repository.UserRepository;
 import com.sdet.auto.springboot2api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +15,11 @@ import java.util.List;
 public class UserMapStructController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @GetMapping
     public List<UserMsDto> getAllUsersDto() {
-        return userMapper.userToUserDto(userRepository.findAll());
+        return userService.getAllUsersMs();
     }
 
     @GetMapping("/{userId}")

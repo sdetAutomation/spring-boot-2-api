@@ -12,6 +12,8 @@ public interface UserService {
 
     List<User> getAllUsers();
 
+    List<UserMsDto> getAllUsersMs();
+
     User createUser(User user) throws UserExistsException;
 
     Optional<User> getUserById(Long id) throws UserNotFoundException;

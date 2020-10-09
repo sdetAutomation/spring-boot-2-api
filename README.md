@@ -660,3 +660,8 @@ which entity fields should be made available for publicly exposed REST api
         - go to UserService and add getUserByIdMs
         - go to UserServiceImpl and add getUserByIdMs method
         - go to UserMapStructController and define getUserByIdDto method
+    
+    - refactor UserMapStructController getAllUsersDto method to call userService
+        - go to UserService and add getAllUsersMs
+        - go to UserServiceImpl implement getAllUsersMs method
+        - go to UserMapStructController refactor to userService.getAllUsersMs()

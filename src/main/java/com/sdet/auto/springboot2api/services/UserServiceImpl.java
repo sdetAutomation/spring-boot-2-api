@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserMsDto> getAllUsersMs() {
+        return userMapper.userToUserDto(userRepository.findAll());
+    }
+
+    @Override
     public User createUser(User user) throws UserExistsException {
         // logic to check repository if user is present
         User existingUser = userRepository.findByUsername(user.getUsername());
