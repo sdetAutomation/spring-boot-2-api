@@ -73,9 +73,9 @@ public class UserServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user1 = new User(td_id1,td_userName1, td_firstName1, td_lastName1, td_email1, td_role1, td_ssn1, null);
-        User user2 = new User(td_id2,td_userName2, td_firstName2, td_lastName2, td_email2, td_role2, td_ssn2, null);
-        User user3 = new User(td_id3,td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
+        User user1 = new User(td_id1, td_userName1, td_firstName1, td_lastName1, td_email1, td_role1, "", td_ssn1, null);
+        User user2 = new User(td_id2, td_userName2, td_firstName2, td_lastName2, td_email2, td_role2, "", td_ssn2, null);
+        User user3 = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, "", td_ssn3, null);
 
         List<User> td_users = Arrays.asList(user1, user2);
 
@@ -174,7 +174,7 @@ public class UserServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
+        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, "", td_ssn3, null);
 
         User returnUser = userService.createUser(user);
 
@@ -192,7 +192,7 @@ public class UserServiceImplIntegrationTest {
         String td_userName3 = "td_userName1";
         String td_error_message = "User already exists in User Repository";
 
-        User user = new User(null, td_userName3, "", "", "", "", "", null);
+        User user = new User(null, td_userName3, "", "", "", "", "", "", null);
 
         try {
             userService.createUser(user);
@@ -212,7 +212,7 @@ public class UserServiceImplIntegrationTest {
         String td_role3 = "td_role3";
         String td_ssn3 = "td_ssn3";
 
-        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, td_ssn3, null);
+        User user = new User(td_id3, td_userName3, td_firstName3, td_lastName3, td_email3, td_role3, "", td_ssn3, null);
 
         User returnUser = userService.updateUserById(td_id1, user);
 
@@ -230,7 +230,7 @@ public class UserServiceImplIntegrationTest {
         Long td_id1 = 999L;
         String td_error_message = "User not found in User Repository, please provide correct user id";
 
-        User user = new User(null, "", "", "", "", "", "", null);
+        User user = new User(null, "", "", "", "", "", "", "", null);
 
         try {
             userService.updateUserById(td_id1, user);

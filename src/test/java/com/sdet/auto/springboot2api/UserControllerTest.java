@@ -47,7 +47,7 @@ public class UserControllerTest {
         String td_role = "td_role1";
         String td_ssn = "td_ssn1";
 
-        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
+        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, "", td_ssn, null);
 
         List<User> allUsers = Arrays.asList(user);
 
@@ -77,7 +77,7 @@ public class UserControllerTest {
         String td_role = "td_role2";
         String td_ssn = "td_ssn2";
 
-        User user = new User(td_id, td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
+        User user = new User(td_id, td_userName, td_firstName, td_lastName, td_email, td_role, "", td_ssn, null);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -107,7 +107,7 @@ public class UserControllerTest {
         String td_role = "td_role1";
         String td_ssn = "td_ssn1";
 
-        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
+        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, "", td_ssn, null);
 
         given(userService.getUserById(td_id)).willReturn(java.util.Optional.of(user));
 
@@ -127,7 +127,7 @@ public class UserControllerTest {
     @Test
     public void User_Controller_tc0004_updateUserById() throws Exception {
         Long td_id = 222L;
-        User user = new User(td_id, "", "", "", "", "", "", null);
+        User user = new User(td_id, "", "", "", "", "", "", "", null);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userAsString = objectMapper.writeValueAsString(user);
@@ -159,7 +159,7 @@ public class UserControllerTest {
         String td_role = "td_role1";
         String td_ssn = "td_ssn1";
 
-        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, td_ssn, null);
+        User user = new User(td_id,td_userName, td_firstName, td_lastName, td_email, td_role, "", td_ssn, null);
 
         given(userService.getUserByUsername(td_userName)).willReturn(user);
 
