@@ -782,7 +782,7 @@ which entity fields should be made available for publicly exposed REST api
 
 - monitor and manage spring boot applications using REST/JMX Actuator endpoints
 
-- endpoints offer: health, metrics monitoring, access to logs, thread dumps, head dumps, environmental info, and more...
+- endpoints offer: health, metrics monitoring, access to logs, thread dumps, heap dumps, environmental info, and more...
 
 1) add spring boot actuator dependency in pom.xml
 
@@ -797,8 +797,31 @@ which entity fields should be made available for publicly exposed REST api
     - then navigate to http://localhost:8080/actuator to see the available endpoints
     
 2) expose all Actuators endpoints and verify Health endpoint
-
+    - go to application.properties add the following
+        - management.endpoints.web.exposure.include=*
+        - management.endpoints.web.exposure.include=info, health, metrics
+        - management.endpoint.health.show-details=always
+        - info.greeting=welcome to sdetAuto's Api
+        - info.hello=hello world
+        
 3) info endpoint - populate build-info on info endpoint
+    - add execution to spring-boot-maven-plugin 
+    
+```
+    <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>build-info</id>
+                <goals>
+                    <goal>build-info</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+```
 
 4) metrics endpoint
 
+- navigate to http://localhost:8080/actuator/ 
