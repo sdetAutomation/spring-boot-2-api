@@ -5,9 +5,13 @@ import com.sdet.auto.springboot2api.exceptions.UserNameNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.User;
 import com.sdet.auto.springboot2api.services.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +25,22 @@ import java.util.Optional;
 @RestController
 @Validated
 @RequestMapping("/users")
+@Api(tags = "User RESTful Api", value = "UserController")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @ApiOperation(value = "retrieves list of all users")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    @ApiOperation(value = "creates a user")
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
+    public ResponseEntity<User> createUser(@ApiParam("User fields to create a new user")
+                                               @Valid @RequestBody User user, UriComponentsBuilder builder) {
         try {
             userService.createUser(user);
             HttpHeaders headers = new HttpHeaders();
@@ -43,6 +51,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "get a user by id")
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") @Min(1) Long id) {
         try {
@@ -53,6 +62,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "update a user by id")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public User updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
@@ -63,6 +73,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "delete a user")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserById(@PathVariable("id") Long id) {

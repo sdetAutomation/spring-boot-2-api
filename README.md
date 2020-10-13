@@ -775,4 +775,5 @@ which entity fields should be made available for publicly exposed REST api
         - @ApiOperation(value = "create a new user")
     - parameter level
         - @ApiParam("User information for a new user created)
-    - produces
+    - produces / responses within the swagger yml
+        - add produces within a mapping.  Example: @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

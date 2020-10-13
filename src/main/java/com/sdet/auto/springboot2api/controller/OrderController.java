@@ -4,6 +4,7 @@ import com.sdet.auto.springboot2api.exceptions.OrderNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.Order;
 import com.sdet.auto.springboot2api.services.OrderService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
+@Api(tags = "Order RESTful Api", value = "OrderController")
 public class OrderController {
 
     @Autowired
