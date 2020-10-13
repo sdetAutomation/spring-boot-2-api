@@ -716,7 +716,7 @@ which entity fields should be made available for publicly exposed REST api
         - http://localhost:8080/swagger-ui.html
 
 3) add API info to modify header of our documentation
-    - create a new class "AppInfo"
+    - create a new class "AppInfo" within our SwaggerConfig class
     - update the Docket bean with AppInfo
 
 4) restrict scope of swagger documentation generation using API base packages and paths
