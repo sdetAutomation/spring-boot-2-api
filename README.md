@@ -746,15 +746,22 @@ which entity fields should be made available for publicly exposed REST api
     - JSR-303 Spec: https://beanvalidation.org/1.0/spec
     - add dependency in pom.xml and restart embedded tomcat
    
-   ``` 
-
    ```
+    <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-bean-validators</artifactId>
+        <version>2.9.2</version>
+    </dependency>
+   ```
+    - go to User model
+        - add @Size(min=2, max=50) to username, firstname, & lastname
    
-  -@Import(BeanValidatorPluginsConfiguration.class) on top of the swagger configuration
-  
-  - verify Models in Swagger UI
+    - @Import(BeanValidatorPluginsConfiguration.class) on top of the swagger configuration
+        - go to SwaggerConfig add @Import(BeanValidatorPluginsConfiguration.class) at the class level
+        
+    - verify Models in Swagger UI
+        - Users Model should have min max defined for username, firstname, & lastname
    
-
 6) add swagger Core annotation to Model class
     - class level
     - @ApiModel(description = "Used create a new user")

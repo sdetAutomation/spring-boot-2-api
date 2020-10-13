@@ -24,16 +24,18 @@ public class User extends ResourceSupport {
     private Long userId; // refactored this name due to hateoas has default field as "id"
 
     // defaults to field name if you do not define name)
+    @Size(min=2, max=50)
     @NotEmpty(message="Username is a required field.  Please provide a username")
     @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
     @JsonView(Views.External.class)
     private String username;
 
-    @Size(min=2, message="FirstName should contain at least 2 characters")
+    @Size(min=2, max=50, message="FirstName should contain at least 2 characters")
     @Column(name = "FIRST_NAME", length = 50, nullable = false)
     @JsonView(Views.External.class)
     private String firstname;
 
+    @Size(min=2, max=50)
     @Column(name = "LAST_NAME", length = 50, nullable = false)
     @JsonView(Views.External.class)
     private String lastname;
