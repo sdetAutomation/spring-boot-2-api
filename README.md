@@ -777,3 +777,28 @@ which entity fields should be made available for publicly exposed REST api
         - @ApiParam("User information for a new user created)
     - produces / responses within the swagger yml
         - add produces within a mapping.  Example: @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+
+#### 15-actuator-springboot-admin
+
+- monitor and manage spring boot applications using REST/JMX Actuator endpoints
+
+- endpoints offer: health, metrics monitoring, access to logs, thread dumps, head dumps, environmental info, and more...
+
+1) add spring boot actuator dependency in pom.xml
+
+```
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+```
+    - next start the app
+    
+    - then navigate to http://localhost:8080/actuator to see the available endpoints
+    
+2) expose all Actuators endpoints and verify Health endpoint
+
+3) info endpoint - populate build-info on info endpoint
+
+4) metrics endpoint
+
