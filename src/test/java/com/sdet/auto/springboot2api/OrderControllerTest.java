@@ -152,7 +152,7 @@ public class OrderControllerTest {
 
     @Test
     public void Order_Controller_tc0006_deleteOrderById() throws Exception {
-        mockMvc.perform(delete("/orders/222")
+        mockMvc.perform(delete("/orders/id/222")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isNoContent())

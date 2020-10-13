@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.hateoas.ResourceSupport;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,28 +14,33 @@ import java.util.List;
 
 // Entity refers to the name of the class.  Represents a table that is stored in a database.
 // Defaults to name of class, however, can also declare a different name @Entity(name = "YourName")
+@ApiModel("This model is used to create a user")
 @Entity
 @Table(name = "user") // this will be the name of the table.  Defaults to the entity name if name field not defined
 //@JsonIgnoreProperties({"firstname", "lastname"}) -- this is part of static filtering @JsonIgnore (please see that commit)
 //@JsonFilter("userFilter") -- this is for MappingJacksonValue filtering
 public class User extends ResourceSupport {
 
+    @ApiModelProperty(notes = "Auto generated unique id", required = true, position = 1)
     @Id // this annotation will make variable as a primary key
     @GeneratedValue
     @JsonView(Views.External.class)
     private Long userId; // refactored this name due to hateoas has default field as "id"
 
     // defaults to field name if you do not define name)
+    @ApiModelProperty(notes = "username should contain more than 1 character", example = "sdet.auto", required = false, position = 2)
+    @Size(min=2, max=50)
     @NotEmpty(message="Username is a required field.  Please provide a username")
     @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
     @JsonView(Views.External.class)
     private String username;
 
-    @Size(min=2, message="FirstName should contain at least 2 characters")
+    @Size(min=2, max=50, message="FirstName should contain at least 2 characters")
     @Column(name = "FIRST_NAME", length = 50, nullable = false)
     @JsonView(Views.External.class)
     private String firstname;
 
+    @Size(min=2, max=50)
     @Column(name = "LAST_NAME", length = 50, nullable = false)
     @JsonView(Views.External.class)
     private String lastname;

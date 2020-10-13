@@ -4,6 +4,7 @@ import com.sdet.auto.springboot2api.exceptions.OrderNotFoundException;
 import com.sdet.auto.springboot2api.exceptions.UserNotFoundException;
 import com.sdet.auto.springboot2api.model.Order;
 import com.sdet.auto.springboot2api.services.OrderService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
+@Api(tags = "Order RESTful Api", value = "OrderController")
 public class OrderController {
 
     @Autowired
@@ -51,9 +53,10 @@ public class OrderController {
     }
 
     @GetMapping("id/{orderId}")
-    public Optional<Order> getOrderById(@PathVariable("orderId") @Min(1) Long id) {
+    public Order getOrderById(@PathVariable("orderId") @Min(1) Long id) {
         try {
-            return orderService.getOrderById(id);
+            Optional<Order> orderOptional = orderService.getOrderById(id);
+            return orderOptional.get();
         } catch (OrderNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
@@ -69,7 +72,7 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("{orderId}")
+    @DeleteMapping("id/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrderById(@PathVariable("orderId") Long id) {
         orderService.deleteOrderById(id);

@@ -686,3 +686,94 @@ which entity fields should be made available for publicly exposed REST api
         - @GetMapping({"/v1/{id}", "/v1.1/{id}")
         - @GetMapping("/v2/{id}")
         
+#### 14-swagger
+
+- swagger is used to document an api, and helps users understand how to implement their client apps
+
+1) add springfox dependencies to pom.sml
+    ```
+   		<dependency>
+   			<groupId>io.springfox</groupId>
+   			<artifactId>springfox-swagger2</artifactId>
+   			<version>2.9.2</version>
+   		</dependency>
+   		
+   		<dependency>
+   			<groupId>io.springfox</groupId>
+   			<artifactId>springfox-swagger-ui</artifactId>
+   			<version>2.9.2</version>
+   		</dependency>
+   ```
+    
+2) create SwaggerConfig file
+    - annotate with @Configuration
+    - annotate with @EnableSwagger2
+    - create a Docket bean and annotate with @Bean
+    - swagger metadata URL
+        - http://localhost:8080/v2/api-docs
+        - verify swagger yml online at https://editor.swagger.io/
+    - swagger ui url
+        - http://localhost:8080/swagger-ui.html
+
+3) add API info to modify header of our documentation
+    - create a new class "AppInfo" within our SwaggerConfig class
+    - update the Docket bean with AppInfo getUserApiInfo
+
+4) restrict scope of swagger documentation generation using API base packages and paths
+    - update base package in RequestHandlerSelectors.basepackage
+        - go to SpringBoot2ApiApplication class and copy the package name from the top of the class
+        - go to SwaggerConfig change Docket .apis(RequestHandlerSelectors.basePackage("com.sdet.auto.springboot2api"))
+        
+    - update PathSelectors.ant("/users/**) to limit to specific paths
+        - .paths(PathSelectors.ant("/users/**")
+        
+    - test doc from http://localhost:8080/v2/api-docs @ https://editor.swagger.io/
+        - error found due to Options<User> in User Controller
+            - go to UserController > fix error by refactoring getUserById to return User
+    
+5)  create swagger info for orders api
+    - go to SwaggerConfig 
+        - create ApiInfo for orders
+        - create docket for orders
+        - add .groupName("") to both user and orders docket
+    - test doc from http://localhost:8080/v2/api-docs?group=Orders @ https://editor.swagger.io/
+        - error found due to Options<Order> in Order Controller
+            - ngo to OrderController > fix error by refactoring getOrderById to return Order
+    - update path for deleteOrderById added "id" to path @DeleteMapping("id/{orderId}")  
+        - fix broken integration tests   
+
+6) auto populate documentation for JSR-303 Validations
+    - JSR-303 Spec: https://beanvalidation.org/1.0/spec
+    - add dependency in pom.xml and restart embedded tomcat
+   
+   ```
+    <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-bean-validators</artifactId>
+        <version>2.9.2</version>
+    </dependency>
+   ```
+    - go to User model
+        - add @Size(min=2, max=50) to username, firstname, & lastname
+   
+    - @Import(BeanValidatorPluginsConfiguration.class) on top of the swagger configuration
+        - go to SwaggerConfig add @Import(BeanValidatorPluginsConfiguration.class) at the class level
+        
+    - verify Models in Swagger UI
+        - Users Model should have min max defined for username, firstname, & lastname
+   
+6) add swagger Core annotation to Model class
+    - go to User Class & Order class add annotation at class level
+    - @ApiModel("This model is used to create a user") & @ApiModel("This model is used to create a order")
+    - field level: notes, required, position, default order without position
+        - @ApiModelProperty(notes = "Auto generated unique id", required = true, position = 1)
+
+7) add swagger Core annotation to Controller Class
+    - controller
+        -@Api(tag = "Use Management RESTful Services", value = "UserController", description)
+    - method level
+        - @ApiOperation(value = "create a new user")
+    - parameter level
+        - @ApiParam("User information for a new user created)
+    - produces / responses within the swagger yml
+        - add produces within a mapping.  Example: @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

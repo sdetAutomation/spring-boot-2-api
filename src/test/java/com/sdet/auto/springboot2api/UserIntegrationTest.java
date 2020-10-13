@@ -274,11 +274,12 @@ public class UserIntegrationTest {
     public void user_tc0010_createUser_Exception() throws IOException {
         String td_UserName = "thor.odinson";
         String td_FirstName = "thor";
+        String td_LastName = "odinson";
         String td_Error = "Bad Request";
         String td_Message = "User already exists in User Repository";
         String td_path = "/users";
 
-        User entity = createUser(td_UserName, td_FirstName, "", "", "", "");
+        User entity = createUser(td_UserName, td_FirstName, td_LastName, "", "", "");
         ResponseEntity<String> response = restTemplate.postForEntity(path, entity, String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
