@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
@@ -45,9 +44,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") @Min(1) Long id) {
+    public User getUserById(@PathVariable("id") @Min(1) Long id) {
         try {
-            return userService.getUserById(id);
+            Optional<User> optionalUser = userService.getUserById(id);
+            return optionalUser.get();
         } catch (UserNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }

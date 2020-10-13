@@ -18,17 +18,17 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(getApiInfo())
+                .apiInfo(getUserApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.sdet.auto.springboot2api"))
+                .paths(PathSelectors.ant("/users/**"))
                 .build();
     }
 
     // swagger metadata: http://localhost:8080/v2/api-docs
     // swagger ui url: http://localhost:8080/swagger-ui.html
 
-    private ApiInfo getApiInfo() {
+    private ApiInfo getUserApiInfo() {
         return new ApiInfoBuilder()
                 .title("sdetAutomation's User Api")
                 .description("This page lists all User Api's")

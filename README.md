@@ -717,15 +717,23 @@ which entity fields should be made available for publicly exposed REST api
 
 3) add API info to modify header of our documentation
     - create a new class "AppInfo" within our SwaggerConfig class
-    - update the Docket bean with AppInfo
+    - update the Docket bean with AppInfo getUserApiInfo
 
 4) restrict scope of swagger documentation generation using API base packages and paths
     - update base package in RequestHandlerSelectors.basepackage
+        - go to SpringBoot2ApiApplication class and copy the package name from the top of the class
+        - go to SwaggerConfig change Docket .apis(RequestHandlerSelectors.basePackage("com.sdet.auto.springboot2api"))
+        
     - update PathSelectors.ant("/users/**) to limit to specific paths
+        - .paths(PathSelectors.ant("/users/**")
+        
+    - test dock from http://localhost:8080/v2/api-docs @ https://editor.swagger.io/
+        - error found due to Options<User> in User Controller
+            - go to UserController > fix error by refactoring getUserById to return User
     
 5) auto populate documentation for JSR-303 Validations
     - JSR-303 Spec: https://beanvalidation.org/1.0/spec
-    - add dependency in pom.xml and restart embedded tomca
+    - add dependency in pom.xml and restart embedded tomcat
    
    ``` 
 
