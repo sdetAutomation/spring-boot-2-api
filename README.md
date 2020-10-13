@@ -727,11 +727,22 @@ which entity fields should be made available for publicly exposed REST api
     - update PathSelectors.ant("/users/**) to limit to specific paths
         - .paths(PathSelectors.ant("/users/**")
         
-    - test dock from http://localhost:8080/v2/api-docs @ https://editor.swagger.io/
+    - test doc from http://localhost:8080/v2/api-docs @ https://editor.swagger.io/
         - error found due to Options<User> in User Controller
             - go to UserController > fix error by refactoring getUserById to return User
     
-5) auto populate documentation for JSR-303 Validations
+5)  create swagger info for orders api
+    - go to SwaggerConfig 
+        - create ApiInfo for orders
+        - create docket for orders
+        - add .groupName("") to both user and orders docket
+    - test doc from http://localhost:8080/v2/api-docs?group=Orders @ https://editor.swagger.io/
+        - error found due to Options<Order> in Order Controller
+            - ngo to OrderController > fix error by refactoring getOrderById to return Order
+    - update path for deleteOrderById added "id" to path @DeleteMapping("id/{orderId}")  
+        - fix broken integration tests   
+
+6) auto populate documentation for JSR-303 Validations
     - JSR-303 Spec: https://beanvalidation.org/1.0/spec
     - add dependency in pom.xml and restart embedded tomcat
    

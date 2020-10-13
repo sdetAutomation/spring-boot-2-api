@@ -16,12 +16,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     @Bean
-    public Docket api() {
+    public Docket userApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("Users")
                 .apiInfo(getUserApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.sdet.auto.springboot2api"))
                 .paths(PathSelectors.ant("/users/**"))
+                .build();
+    }
+
+    @Bean
+    public Docket orderApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("Orders")
+                .apiInfo(getOrderApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.sdet.auto.springboot2api"))
+                .paths(PathSelectors.ant("/orders/**"))
                 .build();
     }
 
@@ -32,6 +44,17 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("sdetAutomation's User Api")
                 .description("This page lists all User Api's")
+                .version("2.0")
+                .contact(new Contact("sdetAutomation", "https://github.com/sdetAutomation/", "sdet.testautomation@gmail.com"))
+                .license("MIT License")
+                .licenseUrl("https://github.com/sdetAutomation/spring-boot-2-api/blob/master/LICENSE")
+                .build();
+    }
+
+    private ApiInfo getOrderApiInfo() {
+        return new ApiInfoBuilder()
+                .title("sdetAutomation's Order Api")
+                .description("This page lists all Order Api's")
                 .version("2.0")
                 .contact(new Contact("sdetAutomation", "https://github.com/sdetAutomation/", "sdet.testautomation@gmail.com"))
                 .license("MIT License")

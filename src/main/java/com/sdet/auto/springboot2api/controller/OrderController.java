@@ -51,9 +51,10 @@ public class OrderController {
     }
 
     @GetMapping("id/{orderId}")
-    public Optional<Order> getOrderById(@PathVariable("orderId") @Min(1) Long id) {
+    public Order getOrderById(@PathVariable("orderId") @Min(1) Long id) {
         try {
-            return orderService.getOrderById(id);
+            Optional<Order> orderOptional = orderService.getOrderById(id);
+            return orderOptional.get();
         } catch (OrderNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
@@ -69,7 +70,7 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("{orderId}")
+    @DeleteMapping("id/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrderById(@PathVariable("orderId") Long id) {
         orderService.deleteOrderById(id);

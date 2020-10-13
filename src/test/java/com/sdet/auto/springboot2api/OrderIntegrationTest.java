@@ -239,7 +239,7 @@ public class OrderIntegrationTest {
         Order entity = createOrder(td_OrderDescription);
         ResponseEntity<Order> response = restTemplate.postForEntity(path + "/" + td_OrderId, entity, Order.class);
         // delete record
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + response.getBody().getOrder_id(),
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/id/" + response.getBody().getOrder_id(),
                 HttpMethod.DELETE, new HttpEntity<String>(null, new HttpHeaders()), String.class);
 
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
@@ -251,9 +251,9 @@ public class OrderIntegrationTest {
         String td_UserId = "888";
         String td_Error = "Bad Request";
         String td_Message = "Order not found in Order Repository, please provide correct order_id";
-        String td_path = "/orders/" + td_UserId;
+        String td_path = "/orders/id/" + td_UserId;
 
-        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/" + td_UserId, HttpMethod.DELETE,
+        ResponseEntity<String> deleteResponse = restTemplate.exchange(path + "/id/" + td_UserId, HttpMethod.DELETE,
                 new HttpEntity<String>(null, new HttpHeaders()), String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, deleteResponse.getStatusCode());
