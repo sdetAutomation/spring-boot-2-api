@@ -763,10 +763,10 @@ which entity fields should be made available for publicly exposed REST api
         - Users Model should have min max defined for username, firstname, & lastname
    
 6) add swagger Core annotation to Model class
-    - class level
-    - @ApiModel(description = "Used create a new user")
-    - field level: notes, required, position, unorder without position
-        - @ApiModelProperty(notes = "userId - Unique identifier of user", required = true)
+    - go to User Class & Order class add annotation at class level
+    - @ApiModel("This model is used to create a user") & @ApiModel("This model is used to create a order")
+    - field level: notes, required, position, default order without position
+        - @ApiModelProperty(notes = "Auto generated unique id", required = true, position = 1)
 
 7) add swagger Core annotation to Controller Class
     - controller

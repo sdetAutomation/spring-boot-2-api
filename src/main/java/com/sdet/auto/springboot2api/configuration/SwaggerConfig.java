@@ -1,6 +1,5 @@
 package com.sdet.auto.springboot2api.configuration;
 
-import org.hibernate.cfg.beanvalidation.BeanValidationEventListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

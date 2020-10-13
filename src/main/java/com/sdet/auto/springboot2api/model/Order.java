@@ -2,13 +2,17 @@ package com.sdet.auto.springboot2api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.hateoas.ResourceSupport;
 import javax.persistence.*;
 
+@ApiModel("This model is used to create a order")
 @Entity
 @Table(name = "orders")
 public class Order extends ResourceSupport {
 
+    @ApiModelProperty(notes = "Auto generated unique id", required = true, position = 1)
     @Id
     @GeneratedValue
     @JsonView(Views.Internal.class)
