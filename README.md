@@ -126,7 +126,7 @@ DELETE - deleteOrder- local: [/orders/id/{orderId}](https://springboot-2-api.her
 
 TDD - Integration Tests
 -----
-This api is fully tested with Unit Tests and Integration tests.  Please see tests directory for examples.
+This api is fully tested with Unit Tests and Integration tests.  Please see [tests directory](src/test/java/com/sdet/auto/springboot2api) for examples.
 
 Test's connects to h2 database for integration tests.
 
