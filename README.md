@@ -167,7 +167,7 @@ Continuous Delivery(CD)
 ------------
 A web hook has been setup with [heroku](https://www.heroku.com/) for all deployments.
 
-[You can view and tryout out the endpoints here](https://springboot-2-api.herokuapp.com/swagger-ui.html)
+[You can view and try the endpoints here](https://springboot-2-api.herokuapp.com/swagger-ui.html)
 
 Step By Step Recreation
 ------------
