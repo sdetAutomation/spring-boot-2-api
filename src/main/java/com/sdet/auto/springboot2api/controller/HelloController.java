@@ -34,4 +34,10 @@ public class HelloController {
     public String getMessagesInI18NFormat() {
         return messageSource.getMessage("label.hello", null, LocaleContextHolder.getLocale());
     }
+
+    @GetMapping("/")
+    public String home() {
+        return "Hello, welcome to sdetAutomation's springboot app.  To see the swagger page please " +
+                "add \"/swagger-ui.html\" to the end of the url path!";
+    }
 }
