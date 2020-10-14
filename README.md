@@ -778,7 +778,7 @@ which entity fields should be made available for publicly exposed REST api
     - produces / responses within the swagger yml
         - add produces within a mapping.  Example: @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 
-#### 15-actuator-springboot-admin
+#### 15-actuator
 
 - monitor and manage spring boot applications using REST/JMX Actuator endpoints
 
