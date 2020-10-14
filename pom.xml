@@ -96,6 +96,18 @@
 			<version>2.9.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-core</artifactId>
+			<version>1.5.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-jmx</artifactId>
+			<version>1.5.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
