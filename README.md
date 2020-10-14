@@ -60,7 +60,7 @@ This project contains a swagger ui.
 
 To view this api's swagger ui, run this application locally, then navigate to [http://localhost:8080/swagger-ui.html]
 
-This app is also deployed using [heroku](https://www.heroku.com/).  To view deployed api swagger navigate to [https://springboot-2-api.herokuapp.com/swagger-ui.html]
+This app is also deployed using [heroku](https://www.heroku.com/).  To view deployed api swagger navigate to [https://springboot-2-api.herokuapp.com/swagger-ui.html](https://springboot-2-api.herokuapp.com/swagger-ui.html)
 
 You can test out this api entirely from the swagger ui page. 
 
@@ -167,6 +167,7 @@ Continuous Delivery(CD)
 ------------
 A web hook has been setup with [heroku](https://www.heroku.com/) for all deployments.
 
+[You can view and tryout out the endpoints here](https://springboot-2-api.herokuapp.com/swagger-ui.html)
 
 Step By Step Recreation
 ------------
