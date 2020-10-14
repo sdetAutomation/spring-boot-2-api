@@ -34,4 +34,12 @@ public class HelloTest {
                 .andExpect(content().string("{\"firstname\":\"sdet\",\"lastname\":\"automation\"," +
                         "\"city\":\"partsunknown\"}"));
     }
+
+    @Test
+    public void tc0003_home() throws Exception {
+        mvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello, welcome to sdetAutomation's springboot app.  " +
+                        "To see the swagger page please add \"/swagger-ui.html\" to the end of the url path!"));
+    }
 }
